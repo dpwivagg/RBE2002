@@ -1,26 +1,19 @@
 #include "RobotMap.h"
 #include <Arduino.h>
 
-#include "Messages.h"
 #include "Chassis.h"
 #include "Arm.h"
 #include "Linesensor.h"
 
-Messages msg;
-unsigned long timeForHeartbeat;
 unsigned long timeForPush;
-
-volatile unsigned int tubeLinesCrossed = 0;
-volatile int gripTime = 0;
 
 Linesensor linesensor;
 Chassis chassis;
 Arm arm;
-States state;
+
 void setup() {
 
-  Serial.begin(9600); // Serial output begin
-
+  Serial.begin(9600);
 
   // pinMode(c_LeftEncoderPinA, INPUT_PULLUP);      // sets pin A as input
   // pinMode(c_LeftEncoderPinB, INPUT_PULLUP);      // sets pin B as input
@@ -44,16 +37,14 @@ void setup() {
   arm.instantStop();
   linesensor.init();
 
-  arm.openGrip();
 }
 
 
 void auton () {
-    //STUFF GOES HERE
 }
 
 void update () {
-    if (msg.isStopped()) {
+    if (false) {
         chassis.instantStop();
         arm.instantStop();
     } else {
