@@ -27,6 +27,19 @@ void Chassis::attach(unsigned char leftMotorFwd, unsigned char leftMotorRwd, uns
 
 }
 
+void Chassis::attach(unsigned char leftMotor, unsigned char rightMotor) {
+    driveLF =  leftMotor;
+    driveRF = rightMotor;
+    driveLR = '\0';
+    driveRR = '\0';
+
+    speedState = 0;
+    turnState = 0;
+
+    pinMode(driveLF, OUTPUT);
+    pinMode(driveRF, OUTPUT);
+}
+
 void Chassis::attachLimit (unsigned char port) {
     limitPort = port;
     limitState = 1;
@@ -63,6 +76,44 @@ void Chassis::turn(signed char turn) { //keep going but turn
 }
 
 void Chassis::update() {
+    if (driveLR == '\0' || driveRR == '\0') {
+      updateSinglePWM();
+    } else {
+      updateDualPWM();
+    }
+
+}
+
+void Chassis::updateSinglePWM() {
+    signed char currLeftSpeed;
+    signed char currRightSpeed;
+
+    if ((int)speedState + (int)turnState > 127) {
+        currLeftSpeed =  127;
+    } else if ((int)speedState + (int)turnState < -127) {
+        currLeftSpeed = -127;
+    } else {
+        currLeftSpeed = speedState + turnState;
+    }
+
+    if ((int)speedState - (int)turnState > 127) {
+        currRightSpeed =  127;
+    } else if ((int)speedState - (int)turnState < -127) {
+        currRightSpeed = -127;
+    } else {
+        currRightSpeed = speedState - turnState;
+    }
+
+    limitState = digitalRead(limitPort);
+
+
+    analogWrite(driveLF,  2 * currLeftSpeed);
+
+    analogWrite(driveRF,  2 * currRightSpeed);
+
+}
+
+void Chassis::updateDualPWM() {
 
     signed char currLeftSpeed;
     signed char currRightSpeed;
@@ -83,10 +134,10 @@ void Chassis::update() {
         currRightSpeed = speedState - turnState;
     }
 
-    Serial.print("MOTOR LEFT : ");
-    Serial.println(currLeftSpeed);
-    Serial.print("MOTOR RIGHT: ");
-    Serial.println(currRightSpeed);
+    // Serial.print("MOTOR LEFT : ");
+    // Serial.println(currLeftSpeed);
+    // Serial.print("MOTOR RIGHT: ");
+    // Serial.println(currRightSpeed);
 
     limitState = digitalRead(limitPort);
 

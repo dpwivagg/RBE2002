@@ -4,10 +4,10 @@
 #include <Arduino.h>
 
 
+/**
+ * static const unsigned char chassis_/arm_
+ */
 
-static const unsigned char type = 0x00;
-static const unsigned char src  = 0x01;
-static const unsigned char dest = 0x02;
 
 static const unsigned char mtrLF =  6;
 static const unsigned char mtrLR =  7;

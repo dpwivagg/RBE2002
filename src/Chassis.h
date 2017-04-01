@@ -18,6 +18,7 @@ class Chassis {
     public:
         Chassis();
         void attach(unsigned char leftMotorFwd, unsigned char leftMotorRwd, unsigned char rightMotorFwd, unsigned char rightMotorRwd);
+        void attach(unsigned char leftMotor, unsigned char rightMotor);
         void attachEnc(unsigned char leftEncA, unsigned char leftEncB, unsigned char rightEncA, unsigned char rightEncB);
         void drive(signed char speed, signed char turn);
         void update();
@@ -29,9 +30,8 @@ class Chassis {
         bool getLimit();
 
     private:
-
-        void LeftLeftEncoderISR();
-        void RightEncoderISR();
+        void updateSinglePWM();
+        void updateDualPWM();
 
         signed char speedState = 0;
         signed char turnState = 0;
@@ -41,7 +41,7 @@ class Chassis {
         unsigned char driveLR;       // create char to map left drive motor
         unsigned char driveRR;       // create char to map right drive motor
 
-        bool limitState; 
+        bool limitState;
         unsigned char limitPort;
 
         unsigned char encLA;       // create char to map left encoder
