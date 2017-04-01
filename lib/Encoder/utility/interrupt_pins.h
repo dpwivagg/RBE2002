@@ -49,19 +49,23 @@
 
 // Arduino Leonardo (untested)
 #elif defined(__AVR_ATmega32U4__) && !defined(CORE_TEENSY)
-<<<<<<< HEAD
   #define CORE_NUM_INTERRUPT	5
+<<<<<<< HEAD
 =======
   #define CORE_NUM_INTERRUPT	4
 >>>>>>> 1842274... Added Encoder library to /lib
+=======
+>>>>>>> 17dff41... fixed encoder accidental merge
   #define CORE_INT0_PIN		3
   #define CORE_INT1_PIN		2
   #define CORE_INT2_PIN		0
   #define CORE_INT3_PIN		1
-<<<<<<< HEAD
   #define CORE_INT4_PIN		7
+<<<<<<< HEAD
 =======
 >>>>>>> 1842274... Added Encoder library to /lib
+=======
+>>>>>>> 17dff41... fixed encoder accidental merge
 
 // Sanguino (untested)
 #elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644__)
@@ -92,7 +96,6 @@
 #elif defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
   #define CORE_NUM_INTERRUPT    1
   #define CORE_INT0_PIN		2
-<<<<<<< HEAD
   
 //https://github.com/SpenceKonde/ATTinyCore/blob/master/avr/extras/ATtiny_x313.md
 #elif defined(__AVR_ATtinyX313__)
@@ -100,9 +103,12 @@
   #define CORE_INT0_PIN		4
   #define CORE_INT1_PIN		5
   
+<<<<<<< HEAD
 =======
 
 >>>>>>> 1842274... Added Encoder library to /lib
+=======
+>>>>>>> 17dff41... fixed encoder accidental merge
 // Arduino Due
 #elif defined(__SAM3X8E__) 
   #define CORE_NUM_INTERRUPT	54

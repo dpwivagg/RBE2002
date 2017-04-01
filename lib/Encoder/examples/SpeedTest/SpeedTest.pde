@@ -90,15 +90,17 @@ void setup() {
   pinMode(outputPin, OUTPUT);
 }
 
-<<<<<<< HEAD
 #if defined(__AVR__) || defined(TEENSYDUINO)
 #define REGTYPE unsigned char
 #else
+<<<<<<< HEAD
 =======
 #if defined(__AVR__)
 #define REGTYPE unsigned char
 #elif defined(__PIC32MX__)
 >>>>>>> 1842274... Added Encoder library to /lib
+=======
+>>>>>>> 17dff41... fixed encoder accidental merge
 #define REGTYPE unsigned long
 #endif
 
