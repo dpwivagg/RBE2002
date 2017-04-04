@@ -20,7 +20,7 @@ void setup() {
   Serial.println("Starting");
   timeForPush = millis() + 100;
 
-  chassis.attach(mtrLF, mtrRF);
+  chassis.attach(mtrLF, mtrLR, mtrRF, mtrRR);
   // arm.attach(mtrArm, potArm, srvClmp);
   chassis.attachLimit(22); //this would be the linsensor in the front
 
