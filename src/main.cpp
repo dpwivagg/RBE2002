@@ -1,5 +1,6 @@
 #include "RobotMap.h"
 #include <Arduino.h>
+#include <NewPing.h>
 
 #include "Chassis.h"
 #include "Arm.h"
@@ -20,7 +21,7 @@ void setup() {
   Serial.println("Starting");
   timeForPush = millis() + 100;
 
-  chassis.attach(mtrLF, mtrLR, mtrRF, mtrRR);
+  chassis.attach(mtrLF, mtrLR);
   // arm.attach(mtrArm, potArm, srvClmp);
   chassis.attachLimit(22); //this would be the linsensor in the front
 
