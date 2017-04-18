@@ -5,11 +5,18 @@
 #include "Chassis.h"
 #include "Arm.h"
 #include "Linesensor.h"
+#include "Encoder.h"
 
 unsigned long timeForPush;
 
 // Linesensor linesensor;
 Chassis chassis;
+Encoder encLeft(2,3);
+Encoder encRight(18,19);
+
+long positionLeft  = -999;
+long positionRight = -999;
+
 // Arm arm;
 
 void setup() {
@@ -32,6 +39,10 @@ void setup() {
 
 
 void auton () {
+  long newLeft, newRight, encError;
+  newLeft = knobLeft.read();
+  newRight = knobRight.read();
+
 }
 
 void update () {
