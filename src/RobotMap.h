@@ -18,6 +18,18 @@ static const unsigned char mtrArm = 5;
 static const unsigned char srvClmp = 3;
 static const unsigned char potArm = A1;
 
+static const unsigned char sonarFrontOut = A10;
+static const unsigned char sonarFrontIn = 24;
+static const unsigned char sonarRightOut = A9;
+static const unsigned char sonarRightIn = 23;
+static const unsigned char sonarBackOut = A8;
+static const unsigned char sonarBackIn = 22;
+
+static const unsigned char encLeft1 = 2;
+static const unsigned char encLeft2 = 3;
+static const unsigned char encRight1 = 18;
+static const unsigned char encRight2 = 19;
+
 static const unsigned char frontSwitch = 22;
 
 static const signed char mtrFwd = -50; // run motor full-speed 'forward'
