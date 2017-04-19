@@ -1,25 +1,37 @@
 #include "Arduino.h"
 #include "Ultrasonic.h"
 #include "RobotMap.h"
+#include <NewPing.h>
 
 Ultrasonic::Ultrasonic() {
 }
 
-unsigned short Ultrasonic::get() {
+unsigned int Ultrasonic::getSide() {
+
+}
+
+unsigned int Ultrasonic::getFront() {
     return sensorState;
 }
 
-void Ultrasonic::init(unsigned char analogPort) {
-    port = analogPort;
+void Ultrasonic::init() {
 }
 
-unsigned short Ultrasonic::getSensor() {
-    return analogRead(port);
+bool Ultrasonic::wallAhead() {
+    return getSensorFront() < getSensorSide();
+}
+
+unsigned int Ultrasonic::getSensorSide() {
+    return (sonarRight.ping_cm() + sonarBack.ping_cm() / 2);
+}
+
+unsigned int Ultrasonic::getSensorFront() {
+    return sonarFront.ping_cm();
 }
 
 void Ultrasonic::update() {
-
-    sensorState = getSensor();
+// set the sensor state to something based on what the get sensors returns
+    //sensorState = getSensor();
 
     // Serial.print("sensor = ");
     // Serial.println(temp);

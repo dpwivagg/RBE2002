@@ -1,6 +1,5 @@
 #include "RobotMap.h"
 #include <Arduino.h>
-#include <NewPing.h>
 #include <LiquidCrystal.h>
 
 #include "Chassis.h"
@@ -14,10 +13,6 @@ unsigned long timeForPush;
 Chassis chassis;
 Encoder encLeft(encLeft1, encLeft2);
 Encoder encRight(encRight1, encRight2);
-
-NewPing sonarFront(sonarFrontOut, sonarFrontIn, 300);
-NewPing sonarRight(sonarRightOut, sonarRightIn, 300);
-NewPing sonarBack(sonarBackOut, sonarBackIn, 300);
 
 long newLeft, newRight, encError;
 long positionLeft  = -999;
@@ -50,18 +45,7 @@ long compError() {
 
 
 void auton () {
-  chassis.drive(mtrFwd);
-  newLeft = encLeft.read();
-  newRight = encRight.read();
 
-  // if we are approaching a wall or a cliff, stop and turn
-  if(sonarFront.ping_cm() <= 10 || !sonarFront.ping_cm()) {
-    chassis.instantStop();
-    // create some function here for a right angle turn
-  }
-
-  positionLeft = newLeft;
-  positionRight = newRight;
 }
 
 void update () {
