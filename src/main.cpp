@@ -30,8 +30,6 @@ void setup() {
 
   chassis.attach(mtrLF, mtrLR);
   // arm.attach(mtrArm, potArm, srvClmp);
-  chassis.attachLimit(22); //this would be the linsensor in the front
-
   chassis.instantStop();
   // linesensor.init();
 
@@ -44,7 +42,7 @@ long compError() {
 
 
 void auton () {
-
+    chassis.drive(90, 0);
 }
 
 void update () {
