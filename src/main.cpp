@@ -23,8 +23,6 @@ void setup() {
 
   Serial.begin(9600);
 
-
-
   Serial.println("Starting");
   timeForPush = millis() + 100;
 
