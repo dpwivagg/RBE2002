@@ -39,9 +39,8 @@ class Ultrasonic {
         bool lineSensor;
         unsigned int getSensorRight();
         unsigned int getSensorBack();
-        unsigned int getSensorSide();
         unsigned int getSensorFront();
-        bool wallAhead();
+        //bool wallAhead();
 };
 
 #endif /* Ultrasonic_H_ */
