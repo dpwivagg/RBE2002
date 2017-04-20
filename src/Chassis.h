@@ -9,7 +9,7 @@
 #define DRIVE_H_
 
 #include <Arduino.h>
-#include <Servo.h>
+#include "Gyro.h"
 
 /**
  * Handles linesensor information
@@ -26,6 +26,7 @@ class Chassis {
         void instantStop();
         void drive(signed char speed);
         void turn(signed char turn);
+        void driveStraight(float setpoint, float currentpoint);
 
     private:
         void updateSinglePWM();
@@ -39,15 +40,15 @@ class Chassis {
         unsigned char driveLR;       // create char to map left drive motor
         unsigned char driveRR;       // create char to map right drive motor
 
-        bool limitState;
-        unsigned char limitPort;
-
         unsigned char encLA;       // create char to map left encoder
         unsigned char encLB;       // create char to map right encoder
         unsigned char encRA;       // create char to map left encoder
         unsigned char encRB;       // create char to map right encoder
 
+        void updateNav();
 
+
+        Gyro gyro;
 
 };
 

@@ -61,6 +61,14 @@ void Chassis::drive(signed char speed) { //go
     speedState = speed;
 }
 
+void Chassis::driveStraight(float setpoint, float currentpoint) { //go
+    gyro.getX();
+}
+
+void Chassis::updateNav() {
+    gyro.update();
+}
+
 void Chassis::turn(signed char turn) { //keep going but turn
     turnState = turn;
 }
