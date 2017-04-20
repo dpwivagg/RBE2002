@@ -52,11 +52,6 @@ void Chassis::instantStop () { //bypasses update();
     analogWrite(driveRR, 0);
 }
 
-void Chassis::instantGo (int go) { //bypasses update();
-    analogWrite(driveLF, go);
-    analogWrite(driveRF, go);
-}
-
 
 void Chassis::drive(signed char speed, signed char turn) { //go
     speedState = speed;
