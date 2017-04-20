@@ -28,7 +28,6 @@ void setup() {
 
   chassis.attach(mtrLF, mtrLR);
   // arm.attach(mtrArm, potArm, srvClmp);
-  chassis.instantStop();
   // linesensor.init();
 
 }
@@ -41,7 +40,7 @@ long compError() {
 
 void auton () {
     Serial.println("go");
-    chassis.instantGo(180);
+    chassis.drive(180);
 }
 
 void update () {
