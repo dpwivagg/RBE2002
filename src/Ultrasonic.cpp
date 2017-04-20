@@ -7,22 +7,39 @@ Ultrasonic::Ultrasonic() {
 }
 
 unsigned int Ultrasonic::getSide() {
-
+    return getSensorSide();
 }
 
 unsigned int Ultrasonic::getFront() {
-    return sensorState;
+    return getSensorFront();
 }
 
 void Ultrasonic::init() {
+    // calibrate the wall sensor starting values
+    calRight = sonarRight.ping_cm();
+    calBack = sonarBack.ping_cm();
+
 }
 
 bool Ultrasonic::wallAhead() {
-    return getSensorFront() < getSensorSide();
+    return (getSensorFront() < getSensorSide());
+}
+
+bool Ultrasonic::clifAhead() {
+    // is the front sensor reading out of range (>300cm)?
+    return (getSensorFront() == 0);
 }
 
 unsigned int Ultrasonic::getSensorSide() {
-    return (sonarRight.ping_cm() + sonarBack.ping_cm() / 2);
+    return (sonarRight.ping_cm() + sonarBack.ping_cm()) / 2;
+}
+
+unsigned int Ultrasonic::getSensorRight() {
+    return sonarRight.ping_cm();
+}
+
+unsigned int Ultrasonic::getSensorBack() {
+    return sonarBack.ping_cm();
 }
 
 unsigned int Ultrasonic::getSensorFront() {
@@ -31,10 +48,5 @@ unsigned int Ultrasonic::getSensorFront() {
 
 void Ultrasonic::update() {
 // set the sensor state to something based on what the get sensors returns
-    //sensorState = getSensor();
-
-    // Serial.print("sensor = ");
-    // Serial.println(temp);
-    // Serial.print("sensor = ");
-    // Serial.println(sensorState);
+    if(getSensorRight() > (2 * calRight))
 }

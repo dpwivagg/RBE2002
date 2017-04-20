@@ -21,11 +21,10 @@ class Ultrasonic {
         void update();
         void init();
         bool wallAhead();
+        bool cliffAhead();
 
     private:
-        unsigned int cm[3];
-        bool sensorState;
-        unsigned char port = 0;
+        unsigned int calRight, calBack;
         unsigned int getSensorSide();
         unsigned int getSensorFront();
 
