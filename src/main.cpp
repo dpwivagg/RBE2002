@@ -1,6 +1,6 @@
 #include "RobotMap.h"
 #include <Arduino.h>
-#include <NewPing.h>
+#include <LiquidCrystal.h>
 
 #include "Chassis.h"
 #include "Arm.h"
@@ -8,8 +8,15 @@
 
 unsigned long timeForPush;
 
-// Linesensor linesensor;
+// Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
 Chassis chassis;
+Encoder encLeft(encLeft1, encLeft2);
+Encoder encRight(encRight1, encRight2);
+
+long newLeft, newRight, encError;
+long positionLeft  = -999;
+long positionRight = -999;
+
 // Arm arm;
 
 void setup() {
@@ -26,6 +33,11 @@ void setup() {
   chassis.instantStop();
   // linesensor.init();
 
+}
+
+long compError() {
+  encError = abs(positionLeft - positionRight);
+  return encError;
 }
 
 
