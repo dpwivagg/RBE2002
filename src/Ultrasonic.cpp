@@ -14,17 +14,17 @@ unsigned short Ultrasonic::get() {
     return state;
 }
 
-bool Ultrasonic::pollLineSensor() {
+void Ultrasonic::updateLineSensor() {
     // over 335, a line is detected, return true and stop the robot
-    return (analogRead(lineSense) > 335);
+    lineSensor = (analogRead(lineSense) > 335);
 }
 
-bool Ultrasonic::wallAhead() {
+/*void Ultrasonic::wallAhead() {
     return (sonarFront.ping_cm() < ((calRight + calBack) / 2));
-}
+}*/
 
 bool Ultrasonic::safeToDrive() {
-    return (pollLineSensor() || wallAhead());
+    return (lineSensor || state == wall);
 }
 
 void Ultrasonic::init() {
@@ -46,9 +46,9 @@ unsigned int Ultrasonic::getSensorFront() {
 }
 
 void Ultrasonic::update() {
-    unsigned int currRight = getSensorRight();
-    unsigned int currBack = getSensorBack();
-    unsigned int currFront = getSensorFront();
+    currRight = getSensorRight();
+    currBack = getSensorBack();
+    currFront = getSensorFront();
     if(abs(currRight - currBack) < 4) state = drive;
     if(currRight > (2 * currBack)) state = edge;
     if(currBack > (2 * currFront)) state = halfDrive;
