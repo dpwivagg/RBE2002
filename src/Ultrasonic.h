@@ -30,17 +30,17 @@ class Ultrasonic {
         unsigned short get();
         void init();
         void update();
+        void updateLineSensor();
         bool safeToDrive();
         SonarStates state;
 
     private:
-        unsigned int calRight, calBack;
+        unsigned int calRight, calBack, currRight, currBack, currFront;
+        bool lineSensor;
         unsigned int getSensorRight();
         unsigned int getSensorBack();
-        unsigned int getSensorSide();
         unsigned int getSensorFront();
-        bool wallAhead();
-        bool pollLineSensor();
+        //bool wallAhead();
 };
 
 #endif /* Ultrasonic_H_ */
