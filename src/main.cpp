@@ -10,8 +10,8 @@ unsigned long timeForPush;
 
 // Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
 Chassis chassis;
-Encoder encLeft(encLeft1, encLeft2);
-Encoder encRight(encRight1, encRight2);
+// Encoder encLeft(encLeft1, encLeft2);
+// Encoder encRight(encRight1, encRight2);
 
 long newLeft, newRight, encError;
 long positionLeft  = -999;
@@ -40,7 +40,8 @@ long compError() {
 
 
 void auton () {
-    chassis.drive(90, 0);
+    Serial.println("go");
+    chassis.instantGo(180);
 }
 
 void update () {
