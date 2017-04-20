@@ -5,6 +5,8 @@
 
 #include <Wire.h>
 
+Gyro::Gyro() {}
+
 void Gyro::gyroZero(){
 // takes 200 samples of the gyro
   for(int i =0;i<200;i++){
@@ -155,7 +157,7 @@ void Gyro::update() {
     complimentaryFilter();
         // updateGyro();
     }
-    
+
 
 }
 

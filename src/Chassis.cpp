@@ -27,17 +27,17 @@ void Chassis::attach(unsigned char leftMotorFwd, unsigned char leftMotorRwd, uns
 
 }
 
-void Chassis::attach(unsigned char leftMotor, unsigned char rightMotor) {
-    driveLF =  leftMotor;
-    driveRF = rightMotor;
+void Chassis::attach(unsigned char leftMotorFwd, unsigned char rightMotorFwd) {
+    driveLF =  leftMotorFwd;
+    driveRF = rightMotorFwd;
     driveLR = '\0';
     driveRR = '\0';
 
     speedState = 0;
     turnState = 0;
 
-    pinMode(driveLF, OUTPUT);
-    pinMode(driveRF, OUTPUT);
+    leftMotor.attach(driveLF, 1000, 2000);
+    rightMotor.attach(driveRF, 1000, 2000);
 }
 
 void Chassis::stop () { //stop
@@ -51,6 +51,12 @@ void Chassis::instantStop () { //bypasses update();
     analogWrite(driveLR, 0);
     analogWrite(driveRR, 0);
 }
+
+void Chassis::instantGo (int go) { //bypasses update();
+    analogWrite(driveLF, go);
+    analogWrite(driveRF, go);
+}
+
 
 void Chassis::drive(signed char speed, signed char turn) { //go
     speedState = speed;
@@ -103,9 +109,9 @@ void Chassis::updateSinglePWM() {
     }
 
 
-    analogWrite(driveLF,  90 + currLeftSpeed);
+    leftMotor.write(90 + currLeftSpeed);
 
-    analogWrite(driveRF,  90 + currRightSpeed);
+    rightMotor.write(90 + currRightSpeed);
 
 }
 
