@@ -9,10 +9,8 @@
  */
 
 
-static const unsigned char mtrLF =  6;
-static const unsigned char mtrLR =  7;
-static const unsigned char mtrRF =  8;
-static const unsigned char mtrRR =  9;
+static const unsigned char mtrLF =  10;
+static const unsigned char mtrLR =  11;
 
 static const unsigned char mtrArm = 5;
 static const unsigned char srvClmp = 3;
@@ -29,40 +27,7 @@ static const unsigned char ledpindebug = 13;
 
 static const unsigned char linesensorArray [8] = {A0, A2, A3, A4, A5, A6, A7, A8};
 
-enum States {
-  kDriveToReactorInitial, //Robot starts the process of extracting spent rod
-  kArmDownInitial,
-  kCloseGripInitial,
-  kArmUpInitial,
-  kBackUpInitial,
-  kDriveToLine,
-  kTurnAroundInitial,
-  kDriveToLineInitial,
-  kStopAfterLineInitial,  //from here, begin storing the spent rod
-  kTurnToStorageInitial,
-  kDriveToStorage,
-  kReleaseSpent,
-  kBackUpStorage,
-  kTurnFromStorage,
-  kDriveFromStorage,
-  kStopAfterLineStorage,
-  kTurnToReactorStr,
-  kDriveToReactorStr, //drives off of horizontal lines, then begin getting supply
-  kTurnAroundToSupply,
-  kDriveToLineSply,
-  kStopPastLineSply,
-  kTurnToStorageSecondary,
-  kDriveToSupply,
-  kGrabSupply,
-  kBackUpSupply,
-  kTurnFromSupply,
-  kDriveFromSupply,
-  kTurnToReactorSply,
-  kDriveToReactorSply,
-  kLowerNewRod,
-  kReleaseNewRod,
-  kArmUpFinal
-};
+
 
 enum Bits {
   BIT0 = 0b00000001,

@@ -40,16 +40,6 @@ void Chassis::attach(unsigned char leftMotor, unsigned char rightMotor) {
     pinMode(driveRF, OUTPUT);
 }
 
-void Chassis::attachLimit (unsigned char port) {
-    limitPort = port;
-    limitState = 1;
-    pinMode(limitPort, INPUT_PULLUP);
-}
-
-bool Chassis::getLimit() {
-    return limitState;
-}
-
 void Chassis::stop () { //stop
     speedState = 0;
     turnState = 0;
@@ -88,28 +78,26 @@ void Chassis::updateSinglePWM() {
     signed char currLeftSpeed;
     signed char currRightSpeed;
 
-    if ((int)speedState + (int)turnState > 127) {
-        currLeftSpeed =  127;
-    } else if ((int)speedState + (int)turnState < -127) {
-        currLeftSpeed = -127;
+    if ((int)speedState + (int)turnState > 90) {
+        currLeftSpeed =  90;
+    } else if ((int)speedState + (int)turnState < -90) {
+        currLeftSpeed = -90;
     } else {
         currLeftSpeed = speedState + turnState;
     }
 
-    if ((int)speedState - (int)turnState > 127) {
-        currRightSpeed =  127;
-    } else if ((int)speedState - (int)turnState < -127) {
-        currRightSpeed = -127;
+    if ((int)speedState - (int)turnState > 90) {
+        currRightSpeed =  90;
+    } else if ((int)speedState - (int)turnState < -90) {
+        currRightSpeed = -90;
     } else {
         currRightSpeed = speedState - turnState;
     }
 
-    limitState = digitalRead(limitPort);
 
+    analogWrite(driveLF,  90 + currLeftSpeed);
 
-    analogWrite(driveLF,  2 * currLeftSpeed);
-
-    analogWrite(driveRF,  2 * currRightSpeed);
+    analogWrite(driveRF,  90 + currRightSpeed);
 
 }
 
@@ -133,13 +121,6 @@ void Chassis::updateDualPWM() {
     } else {
         currRightSpeed = speedState - turnState;
     }
-
-    // Serial.print("MOTOR LEFT : ");
-    // Serial.println(currLeftSpeed);
-    // Serial.print("MOTOR RIGHT: ");
-    // Serial.println(currRightSpeed);
-
-    limitState = digitalRead(limitPort);
 
     if (currLeftSpeed > 0) {
         analogWrite(driveLF,  2 * currLeftSpeed);

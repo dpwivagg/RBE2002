@@ -155,11 +155,7 @@ void Gyro::update() {
     complimentaryFilter();
         // updateGyro();
     }
-    // prints the gyro value once per second
-    if((millis()-timer2)>=1000)
-    {
-        printGyro();
-    }
+    
 
 }
 
