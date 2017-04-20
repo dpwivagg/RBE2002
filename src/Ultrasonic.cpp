@@ -3,35 +3,34 @@
 #include "RobotMap.h"
 #include <NewPing.h>
 
+NewPing sonarFront(sonarFrontOut, sonarFrontIn, 300);
+NewPing sonarRight(sonarRightOut, sonarRightIn, 300);
+NewPing sonarBack(sonarBackOut, sonarBackIn, 300);
+
 Ultrasonic::Ultrasonic() {
 }
 
-unsigned int Ultrasonic::getSide() {
-    return getSensorSide();
+unsigned short Ultrasonic::get() {
+    return state;
 }
 
-unsigned int Ultrasonic::getFront() {
-    return getSensorFront();
+bool Ultrasonic::pollLineSensor() {
+    // over 335, a line is detected, return true and stop the robot
+    return (analogRead(lineSense) > 335);
+}
+
+bool Ultrasonic::wallAhead() {
+    return (sonarFront.ping_cm() < ((calRight + calBack) / 2));
+}
+
+bool Ultrasonic::safeToDrive() {
+    return (pollLineSensor() || wallAhead());
 }
 
 void Ultrasonic::init() {
     // calibrate the wall sensor starting values
     calRight = sonarRight.ping_cm();
     calBack = sonarBack.ping_cm();
-
-}
-
-bool Ultrasonic::wallAhead() {
-    return (getSensorFront() < getSensorSide());
-}
-
-bool Ultrasonic::clifAhead() {
-    // is the front sensor reading out of range (>300cm)?
-    return (getSensorFront() == 0);
-}
-
-unsigned int Ultrasonic::getSensorSide() {
-    return (sonarRight.ping_cm() + sonarBack.ping_cm()) / 2;
 }
 
 unsigned int Ultrasonic::getSensorRight() {
@@ -47,6 +46,11 @@ unsigned int Ultrasonic::getSensorFront() {
 }
 
 void Ultrasonic::update() {
-// set the sensor state to something based on what the get sensors returns
-    if(getSensorRight() > (2 * calRight))
+    unsigned int currRight = getSensorRight();
+    unsigned int currBack = getSensorBack();
+    unsigned int currFront = getSensorFront();
+    if(abs(currRight - currBack) < 4) state = drive;
+    if(currRight > (2 * currBack)) state = edge;
+    if(currBack > (2 * currFront)) state = halfDrive;
+    if(currFront < ((calRight + calBack) / 2)) state = wall;
 }

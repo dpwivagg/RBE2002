@@ -5,11 +5,10 @@
 #include "Chassis.h"
 #include "Arm.h"
 #include "Linesensor.h"
-#include "Encoder.h"
 
 unsigned long timeForPush;
 
-// Linesensor linesensor;
+// Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
 Chassis chassis;
 Encoder encLeft(encLeft1, encLeft2);
 Encoder encRight(encRight1, encRight2);

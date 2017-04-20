@@ -10,27 +10,37 @@
 
 #include <NewPing.h>
 #include "RobotMap.h"
+
+enum SonarStates {
+    drive, // both side sensors are reading similar values
+    wall, // the front sensor has reached a wall
+
+    edge, // the side front sensor has passed a corner but the
+    // back is still reading the wall--time to turn
+    halfDrive // the side front sensor is next to the wall but the
+    // back is not reading anything--drive forward until the back
+    // reaches the wall
+};
 /**
  * Handles Ultrasonic information
  */
 class Ultrasonic {
     public:
         Ultrasonic();
-        unsigned int getSide();
-        unsigned int getFront();
-        void update();
+        unsigned short get();
         void init();
-        bool wallAhead();
-        bool cliffAhead();
+        void update();
+        bool safeToDrive();
+        SonarStates state;
 
     private:
         unsigned int calRight, calBack;
+        unsigned int getSensorRight();
+        unsigned int getSensorBack();
         unsigned int getSensorSide();
         unsigned int getSensorFront();
-
-        NewPing sonarFront(sonarFrontOut, sonarFrontIn, 300);
-        NewPing sonarRight(sonarRightOut, sonarRightIn, 300);
-        NewPing sonarBack(sonarBackOut, sonarBackIn, 300);
+        bool wallAhead();
+        bool pollLineSensor();
 };
 
 #endif /* Ultrasonic_H_ */
