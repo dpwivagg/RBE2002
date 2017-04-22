@@ -41,8 +41,8 @@ void Chassis::attach(unsigned char leftMotorFwd, unsigned char rightMotorFwd) {
 }
 
 void Chassis::stop () { //stop
-    speedState = 0;
-    turnState = 0;
+    speedState = 90;
+    turnState = 90;
 }
 
 void Chassis::instantStop () { //bypasses update();

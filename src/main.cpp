@@ -5,13 +5,14 @@
 #include "Chassis.h"
 #include "Arm.h"
 #include "Linesensor.h"
+#include "Ultrasonic.h"
 
 unsigned long timeForPush;
 
 // Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
 Chassis chassis;
-// Encoder encLeft(encLeft1, encLeft2);
-// Encoder encRight(encRight1, encRight2);
+Ultrasonic ultrasonic;
+LiquidCrystal lcd(40,41,42,43,44,45);
 
 long newLeft, newRight, encError;
 long positionLeft  = -999;
@@ -27,9 +28,21 @@ void setup() {
   timeForPush = millis() + 100;
 
   chassis.attach(mtrLF, mtrLR);
+  ultrasonic.init();
+
+  lcd.begin(16,1);
   // arm.attach(mtrArm, potArm, srvClmp);
   // linesensor.init();
 
+  /*Chassis test routine
+  chassis.drive(140);
+  delay(3000);
+  chassis.drive(120, 90);
+  delay(1000);
+  chassis.stop();
+  delay(1000);
+  chassis.drive(120,-90);
+  chassis.stop();*/
 }
 
 long compError() {
@@ -39,8 +52,37 @@ long compError() {
 
 
 void auton () {
-    Serial.println("go");
-    chassis.drive(180);
+    /*Test of basic ultrasonic safeToDrive function
+    ultrasonic.update();
+    if(ultrasonic.safeToDrive()) {
+        Serial.println("go");
+        chassis.drive(110);
+    }
+    else {
+        Serial.println("stop");
+        chassis.stop();
+    }
+    delay(250);*/
+    /*Test of all possible ultrasonic cases + LCD output
+    ultrasonic.update();
+    switch(ultrasonic.get()) {
+        case drive : lcd.clear();
+        lcd.print("drive     ");
+        break;
+        case edge : lcd.clear();
+        lcd.print("edge          ");
+        break;
+        case halfDrive : lcd.clear();
+        lcd.print("halfDrive   ");
+        break;
+        case wall : lcd.clear();
+        lcd.print("wall");
+        break;
+        default : lcd.clear();
+        lcd.print("no info    ");
+        break;
+    }
+    delay(250);*/
 }
 
 void update () {

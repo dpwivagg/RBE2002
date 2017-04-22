@@ -3,9 +3,9 @@
 #include "RobotMap.h"
 #include <NewPing.h>
 
-NewPing sonarFront(sonarFrontOut, sonarFrontIn, 300);
-NewPing sonarRight(sonarRightOut, sonarRightIn, 300);
-NewPing sonarBack(sonarBackOut, sonarBackIn, 300);
+NewPing sonarFront(sonarFrontOut, sonarFrontIn, 375);
+NewPing sonarRight(sonarRightOut, sonarRightIn, 375);
+NewPing sonarBack(sonarBackOut, sonarBackIn, 375);
 
 Ultrasonic::Ultrasonic() {
 }
@@ -16,7 +16,8 @@ unsigned short Ultrasonic::get() {
 
 void Ultrasonic::updateLineSensor() {
     // over 335, a line is detected, return true and stop the robot
-    lineSensor = (analogRead(lineSense) > 335);
+    if(analogRead(lineSense) > 335) lineSensor = true;
+    else lineSensor = false;
 }
 
 /*void Ultrasonic::wallAhead() {
@@ -24,13 +25,15 @@ void Ultrasonic::updateLineSensor() {
 }*/
 
 bool Ultrasonic::safeToDrive() {
-    return (lineSensor || state == wall);
+    if(state == wall || lineSensor) return false;
+    return true;
 }
 
 void Ultrasonic::init() {
     // calibrate the wall sensor starting values
     calRight = sonarRight.ping_cm();
     calBack = sonarBack.ping_cm();
+    //Serial.println((calRight + calBack)/2);
 }
 
 unsigned int Ultrasonic::getSensorRight() {
@@ -49,8 +52,17 @@ void Ultrasonic::update() {
     currRight = getSensorRight();
     currBack = getSensorBack();
     currFront = getSensorFront();
-    if(abs(currRight - currBack) < 4) state = drive;
-    if(currRight > (2 * currBack)) state = edge;
-    if(currBack > (2 * currFront)) state = halfDrive;
+    if(abs(currRight - currBack) < 4) {
+        state = drive;
+        Serial.println("All clear");
+    }
+    if(currRight > (2 * currBack)) {
+        state = edge;
+        Serial.println("About to turn!");
+    }
+    if(currBack > (2 * currFront)) {
+        state = halfDrive;
+        Serial.println("Almost around the corner");
+    }
     if(currFront < ((calRight + calBack) / 2)) state = wall;
 }
