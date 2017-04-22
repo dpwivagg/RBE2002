@@ -43,6 +43,11 @@ long compError() {
 
 
 void auton () {
+    /*Chassis test routine*/
+    // chassis.instantGo(90);
+    chassis.drive(45, 90);
+
+
     /*Test of basic ultrasonic safeToDrive function
     ultrasonic.update();
     if(ultrasonic.safeToDrive()) {
