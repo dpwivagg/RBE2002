@@ -22,6 +22,13 @@ class Gyro {
         bool init();
         void update();
 
+
+        int getX();
+        int getY();
+        int getZ();
+
+    private:
+
         void gyroZero();
         void updateGyro();
         void printGyro();
@@ -29,11 +36,7 @@ class Gyro {
         void accelZero();
         void updateAccel();
         void complimentaryFilter();
-        int getX();
-        int getY();
-        int getZ();
 
-    private:
         float G_Dt=0.001;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
 
         long timer=0;   //general purpose timer

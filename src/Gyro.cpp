@@ -20,9 +20,9 @@ void Gyro::gyroZero(){
   gerry = gerry/200;
   gerrz = gerrz/200;
 
-  Serial.println(gerrx); // print error vals
-  Serial.println(gerry);
-  Serial.println(gerrz);
+  // Serial.println(gerrx); // print error vals
+  // Serial.println(gerry);
+  // Serial.println(gerrz);
 }
 
 void Gyro::updateGyro(){
@@ -49,19 +49,19 @@ void Gyro::printGyro(){
   timer2=millis();
 
  // The gyro_axis variable keeps track of roll, pitch,yaw based on the complimentary filter
-  Serial.print(" GX: ");
-  Serial.print(gyro_x);
-  Serial.print(" GY: ");
-  Serial.print(gyro_y);
-  Serial.print(" GZ: ");
-  Serial.print(gyro_z);
-
-  Serial.print("  Ax =  ");
-  Serial.print(accel_x);
-  Serial.print("  Ay =  ");
-  Serial.print(accel_y);
-  Serial.print("  Az =  ");
-  Serial.println(accel_z);
+  // Serial.print(" GX: ");
+  // Serial.print(gyro_x);
+  // Serial.print(" GY: ");
+  // Serial.print(gyro_y);
+  // Serial.print(" GZ: ");
+  // Serial.print(gyro_z);
+  //
+  // Serial.print("  Ax =  ");
+  // Serial.print(accel_x);
+  // Serial.print("  Ay =  ");
+  // Serial.print(accel_y);
+  // Serial.print("  Az =  ");
+  // Serial.println(accel_z);
 }
 
 void Gyro::Accel_Init()
@@ -97,10 +97,10 @@ void Gyro::accelZero(){
     aerrx = gerrx/100; // average reading to obtain an error/offset
     aerry = gerry/100;
     aerrz = gerrz/100;
-    Serial.println("accel starting values");
-    Serial.println(aerrx); // print error vals
-    Serial.println(aerry);
-    Serial.println(aerrz);
+    // Serial.println("accel starting values");
+    // Serial.println(aerrx); // print error vals
+    // Serial.println(aerry);
+    // Serial.println(aerrz);
 }
 
 
@@ -153,7 +153,7 @@ void Gyro::update() {
     // reads imu every 20ms
     if((millis()-timer)>=20)
     {
-    complimentaryFilter();
+        complimentaryFilter();
         // updateGyro();
     }
 
