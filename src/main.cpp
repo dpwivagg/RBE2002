@@ -59,41 +59,30 @@ long compError() {
 
 
 void auton () {
-    /*Chassis test routine*/
-    // chassis.instantGo(90);
 
-
-    /*Test of basic ultrasonic safeToDrive function
-    ultrasonic.update();
-    if(ultrasonic.safeToDrive()) {
-        Serial.println("go");
-        chassis.drive(110);
-    }
-    else {
-        Serial.println("stop");
-        chassis.stop();
-    }
-    delay(250);*/
-    /*Test of all possible ultrasonic cases + LCD output
-    ultrasonic.update();
     switch(ultrasonic.get()) {
         case drive : lcd.clear();
         lcd.print("drive     ");
+        chassis.drive(40);
         break;
         case edge : lcd.clear();
         lcd.print("edge          ");
+        chassis.drive(25, 90);
         break;
         case halfDrive : lcd.clear();
         lcd.print("halfDrive   ");
+        chassis.drive(25, 90);
         break;
         case wall : lcd.clear();
         lcd.print("wall");
+        chassis.instantStop();
         break;
         default : lcd.clear();
         lcd.print("no info    ");
+        chassis.instantStop();
         break;
     }
-    delay(250);*/
+
 }
 
 void update () {
@@ -102,6 +91,7 @@ void update () {
         // arm.instantStop();
     } else {
         chassis.update();
+        ultrasonic.update();
         // arm.update();
     }
 
