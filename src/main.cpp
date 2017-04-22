@@ -6,12 +6,15 @@
 #include "Arm.h"
 #include "Linesensor.h"
 #include "Ultrasonic.h"
+#include "Gyro.h"
 
 unsigned long timeForPush;
 
 // Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
 Chassis chassis;
 Ultrasonic ultrasonic;
+Gyro gyro;
+
 LiquidCrystal lcd(40,41,42,43,44,45);
 
 long newLeft, newRight, encError;
@@ -29,11 +32,10 @@ void setup() {
 
   chassis.attach(mtrLF, mtrLR);
   ultrasonic.init();
+  gyro.init();
+  gyro.gyroZero();
 
   lcd.begin(16,1);
-  // arm.attach(mtrArm, potArm, srvClmp);
-  // linesensor.init();
-
 }
 
 long compError() {
@@ -43,62 +45,7 @@ long compError() {
 
 
 void auton () {
-    /*Chassis test routine*/
-    // chassis.instantGo(90);
-    switch(ultrasonic.get()) {
-        case drive : lcd.clear();
-        lcd.print("drive     ");
-        chassis.drive(40);
-        break;
-        case edge : lcd.clear();
-        lcd.print("edge          ");
-        chassis.drive(25, 90);
-        break;
-        case halfDrive : lcd.clear();
-        lcd.print("halfDrive   ");
-        chassis.drive(25, 90);
-        break;
-        case wall : lcd.clear();
-        lcd.print("wall");
-        chassis.instantStop();
-        break;
-        default : lcd.clear();
-        lcd.print("no info    ");
-        chassis.instantStop();
-        break;
-    }
-
-
-    /*Test of basic ultrasonic safeToDrive function
-    ultrasonic.update();
-    if(ultrasonic.safeToDrive()) {
-        Serial.println("go");
-        chassis.drive(110);
-    }
-    else {
-        Serial.println("stop");
-        chassis.stop();
-    }
-    delay(250);*/
-    /*Test of all possible ultrasonic cases + LCD output
-    ultrasonic.update();
-    switch(ultrasonic.get()) {
-        case drive : lcd.clear();
-        lcd.print("drive     ");
-        break;
-        case edge : lcd.clear();
-        lcd.print("edge          ");
-        break;
-        case halfDrive : lcd.clear();
-        lcd.print("halfDrive   ");
-        break;
-        case wall : lcd.clear();
-        lcd.print("wall");
-        break;
-        default : lcd.clear();
-        lcd.print("no info    ");
-        break;
-    }*/
+    gyro.printGyro();
 }
 
 void update () {
@@ -108,6 +55,7 @@ void update () {
     } else {
         chassis.update();
         ultrasonic.update();
+        gyro.update();
         // arm.update();
     }
 
