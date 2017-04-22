@@ -137,9 +137,8 @@ void Gyro::complimentaryFilter(){
 
 bool Gyro::init() {
     Wire.begin(); // i2c begin
-
     if (!gyro.init()){ // gyro init
-    return false;
+        return false;
     }
     timer=millis(); // init timer for first reading
     gyro.enableDefault(); // gyro init. default 250/deg/s

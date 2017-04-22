@@ -33,7 +33,6 @@ void setup() {
   chassis.attach(mtrLF, mtrLR);
   ultrasonic.init();
   gyro.init();
-  gyro.gyroZero();
 
   lcd.begin(16,1);
 }
@@ -45,7 +44,6 @@ long compError() {
 
 
 void auton () {
-    gyro.printGyro();
 }
 
 void update () {
