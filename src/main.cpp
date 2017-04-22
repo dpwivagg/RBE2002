@@ -34,7 +34,7 @@ void setup() {
   // arm.attach(mtrArm, potArm, srvClmp);
   // linesensor.init();
 
-  /*Chassis test routine
+  /*Chassis test routine*/
   chassis.drive(140);
   delay(3000);
   chassis.drive(120, 90);
@@ -42,7 +42,7 @@ void setup() {
   chassis.stop();
   delay(1000);
   chassis.drive(120,-90);
-  chassis.stop();*/
+  chassis.stop();
 }
 
 long compError() {
