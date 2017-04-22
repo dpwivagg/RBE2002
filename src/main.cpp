@@ -6,12 +6,14 @@
 #include "Arm.h"
 #include "Linesensor.h"
 #include "Ultrasonic.h"
+#include "Navigation.h"
 
 unsigned long timeForPush;
 
 // Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
 Chassis chassis;
 Ultrasonic ultrasonic;
+Navigation nav;
 LiquidCrystal lcd(40,41,42,43,44,45);
 
 long newLeft, newRight, encError;
@@ -34,6 +36,20 @@ void setup() {
   // arm.attach(mtrArm, potArm, srvClmp);
   // linesensor.init();
 
+  lcd.clear();
+
+  // lcd.print("GYRO INIT");
+
+  // delay(100);
+
+  if (nav.init()) {
+      lcd.print("GYRO SUCCESS");
+  } else {
+      lcd.print("GYRO FAILED");
+  }
+
+  delay(1000);
+
 }
 
 long compError() {
@@ -45,7 +61,6 @@ long compError() {
 void auton () {
     /*Chassis test routine*/
     // chassis.instantGo(90);
-    chassis.drive(45, 90);
 
 
     /*Test of basic ultrasonic safeToDrive function

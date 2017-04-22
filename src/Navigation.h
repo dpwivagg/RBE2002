@@ -8,6 +8,7 @@
 #ifndef NAVIGATION_H_
 #define NAVIGATION_H_
 
+#include "Gyro.h"
 
 /**
  * Handles nav information
@@ -15,10 +16,12 @@
 class Navigation {
     public:
         Navigation();
-        void update(int encoderTicksL, int encoderTicksR);
-        void init();
+        void updateEnc(int encoderTicksL, int encoderTicksR);
+        void updateGyro();
+        bool init();
 
     private:
+        Gyro gyro;
         int encoderTicksL;
         int encoderTicksR;
 

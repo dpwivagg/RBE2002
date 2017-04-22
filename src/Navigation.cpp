@@ -2,11 +2,15 @@
 
 Navigation::Navigation() {}
 
-void Navigation::init() {
-
+bool Navigation::init() {
+    return gyro.init();
 }
 
-void Navigation::update(int _encoderTicksL, int _encoderTicksR) {
+void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {
     encoderTicksL = _encoderTicksL;
     encoderTicksR = _encoderTicksR;
+}
+
+void Navigation::updateGyro() {
+    gyro.update();
 }
