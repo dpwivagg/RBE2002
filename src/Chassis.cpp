@@ -46,10 +46,29 @@ void Chassis::stop () { //stop
 }
 
 void Chassis::instantStop () { //bypasses update();
-    analogWrite(driveLF, 0);
-    analogWrite(driveRF, 0);
-    analogWrite(driveLR, 0);
-    analogWrite(driveRR, 0);
+    if (driveLR == '\0' || driveRR == '\0') {
+        leftMotor.write(90);
+
+        rightMotor.write(90);
+    } else {
+        analogWrite(driveLF, 0);
+        analogWrite(driveRF, 0);
+        analogWrite(driveLR, 0);
+        analogWrite(driveRR, 0);
+    }
+}
+
+void Chassis::instantGo(int go) { //bypasses update();
+    if (driveLR == '\0' || driveRR == '\0') {
+        leftMotor.write(90 + go);
+
+        rightMotor.write(90 - go);
+    } else {
+        analogWrite(driveLF, 0);
+        analogWrite(driveRF, 0);
+        analogWrite(driveLR, 0);
+        analogWrite(driveRR, 0);
+    }
 }
 
 
@@ -84,8 +103,8 @@ void Chassis::update() {
 }
 
 void Chassis::updateSinglePWM() {
-    signed char currLeftSpeed;
-    signed char currRightSpeed;
+    volatile signed char currLeftSpeed = 0;
+    volatile signed char currRightSpeed = 0;
 
     if ((int)speedState + (int)turnState > 90) {
         currLeftSpeed =  90;
@@ -104,9 +123,9 @@ void Chassis::updateSinglePWM() {
     }
 
 
-    leftMotor.write(90 + currLeftSpeed);
+    leftMotor.write(90 + (currLeftSpeed));
 
-    rightMotor.write(90 + currRightSpeed);
+    rightMotor.write(90 - (currRightSpeed));
 
 }
 
