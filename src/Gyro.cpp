@@ -137,7 +137,6 @@ void Gyro::complimentaryFilter(){
 
 bool Gyro::init() {
     Wire.begin(); // i2c begin
-
     if (!gyro.init()){ // gyro init
         return false;
     }

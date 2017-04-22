@@ -31,10 +31,9 @@ void setup() {
 
   chassis.attach(mtrLF, mtrLR);
   ultrasonic.init();
+  gyro.init();
 
   lcd.begin(16,1);
-  // arm.attach(mtrArm, potArm, srvClmp);
-  // linesensor.init();
 
   lcd.clear();
 
@@ -59,7 +58,7 @@ long compError() {
 
 
 void auton () {
-
+/*
     switch(ultrasonic.get()) {
         case drive : lcd.clear();
         lcd.print("drive     ");
@@ -82,7 +81,7 @@ void auton () {
         chassis.instantStop();
         break;
     }
-
+*/
 }
 
 void update () {
@@ -92,6 +91,7 @@ void update () {
     } else {
         chassis.update();
         ultrasonic.update();
+        gyro.update();
         // arm.update();
     }
 
