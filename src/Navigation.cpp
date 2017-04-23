@@ -15,7 +15,7 @@ double Navigation::getDir() {
     height = pow((((double)encoderError / (double)encTicksPerRev) * 2 * M_PI * radius),2);
     c = (72 - height) / 72;
     heading = acos(c);
-    return (heading * (180.0 / M_PI));  // Returns the angle of displacement in degrees
+    return (0 - (heading * (180.0 / M_PI)));  // Returns the angle of displacement in degrees
     // See the page in our box for worked calculations
 }
 
