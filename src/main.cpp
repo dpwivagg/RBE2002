@@ -46,11 +46,8 @@ void setup() {
 }
 
 void auton () {
-    chassis.drive(110);
-    Serial.print(encLeft.read());
-    Serial.print("\t");
-    Serial.println(encRight.read());
-    delay(250);
+    chassis.drive(120);
+    Serial.println(nav.getDir());
 }
 
 void update () {

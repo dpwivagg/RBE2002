@@ -13,7 +13,7 @@ double Navigation::getDir() {
     encoderError = abs(encoderTicksL - encoderTicksR);
     height = pow(((encoderError / encTicksPerRev) * 2 * M_PI * radius),2);
     heading = acos((72 - height) / 72);
-    return heading;
+    return round(heading);
 }
 
 void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {
