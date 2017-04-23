@@ -46,6 +46,9 @@ void setup() {
 }
 
 void auton () {
+    // TODO : Use nav.getDir() to provide angle of turning to chassis.Drive()
+    // TODO : Get the robot to drive in straight lines and execute 90 degree turns
+    // TODO : 
     Serial.println(nav.getDir());
     delay(500);
 }
