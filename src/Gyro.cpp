@@ -153,8 +153,8 @@ void Gyro::update() {
     // reads imu every 20ms
     if((millis()-timer)>=20)
     {
-        complimentaryFilter();
-        // updateGyro();
+        // complimentaryFilter();
+        updateGyro();
     }
 
 
