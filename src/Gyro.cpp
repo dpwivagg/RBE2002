@@ -9,7 +9,7 @@ Gyro::Gyro() {}
 
 void Gyro::gyroZero(){
 // takes 200 samples of the gyro
-  for(int i =0;i<200;i++){
+  for(int i = 0;i<200;i++){
       gyro.read();
       gerrx+=gyro.g.x;
       gerry+=gyro.g.y;
