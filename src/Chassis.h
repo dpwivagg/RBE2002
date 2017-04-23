@@ -9,7 +9,6 @@
 #define DRIVE_H_
 
 #include <Arduino.h>
-#include "Gyro.h"
 #include "Servo.h"
 
 /**
@@ -29,7 +28,7 @@ class Chassis {
         void turn(signed char turn);
         void driveStraight(float setpoint, float currentpoint);
         void instantGo (int go);
-        
+
 
     private:
         void updateSinglePWM();
@@ -52,8 +51,6 @@ class Chassis {
 
         Servo leftMotor;
         Servo rightMotor;
-
-        Gyro gyro;
 
 };
 
