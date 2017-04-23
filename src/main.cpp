@@ -59,14 +59,20 @@ void auton () {
         case wall : lcd.clear();
             lcd.print("wall     ");
             robotHeading += 90;
-        if(nav.getDir() < robotHeading) chassis.drive(0, -35);
+            if(nav.getDir() < robotHeading) {
+                ultrasonic.lock();
+                chassis.drive(0, -35);
+            }
+            else ultrasonic.unlock();
         break;
         case edge : lcd.clear();
             lcd.print("edge     ");
             robotHeading -= 90;
-        if(nav.getDir() > robotHeading) {
-            chassis.drive(0, 35);
-        }
+            if(nav.getDir() > robotHeading) {
+                ultrasonic.lock();
+                chassis.drive(0, 35);
+            }
+            else ultrasonic.unlock();
         break;
         case halfDrive : lcd.clear();
             lcd.print("half     ");
