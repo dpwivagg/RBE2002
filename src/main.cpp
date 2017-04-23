@@ -8,7 +8,8 @@
 #include "Ultrasonic.h"
 #include "Navigation.h"
 
-unsigned long timeForPush;
+unsigned long timeForPushSubsysFreq = 0;
+unsigned long timeForPushGyroFreq   = 0;
 
 // Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
 Chassis chassis;
@@ -26,8 +27,7 @@ void setup() {
   Serial.begin(9600);
 
   Serial.println("Starting");
-  timeForPush = millis() + 100;
-
+  timeForPushSubsysFreq = millis() + 100;
   chassis.attach(mtrLF, mtrLR);
   ultrasonic.init();
 
@@ -48,19 +48,18 @@ void setup() {
 void auton () {
     // TODO : Use nav.getDir() to provide angle of turning to chassis.Drive()
     // TODO : Get the robot to drive in straight lines and execute 90 degree turns
-    // TODO : 
+    // TODO :
     Serial.println(nav.getDir());
     delay(500);
 }
 
-void update () {
+void updateSubsys () {
     if (false) {
         chassis.instantStop();
         // arm.instantStop();
     } else {
         chassis.update();
         ultrasonic.update();
-        nav.updateGyro();
         nav.updateEnc(encLeft.read(), encRight.read());
         // arm.update();
     }
@@ -76,8 +75,13 @@ void update () {
 
 void loop() {
   auton();  //calls the auton method
-  if (millis() > timeForPush) {
-    timeForPush = millis() + 100;
-    update();
+  if (millis() > timeForPushSubsysFreq) {
+    timeForPushSubsysFreq = millis() + 100;
+    updateSubsys();
   }
+  // if (millis() > timeForPushGyroFreq) {
+  //   timeForPushGyroFreq = millis() + 20;
+  //   updateGyro();
+  // }
+  nav.updateGyro(); //nav.updateGyro()
 }
