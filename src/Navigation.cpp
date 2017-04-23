@@ -24,10 +24,17 @@ double Navigation::getDir() {
 }
 
 void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {
+    encoderTicksOldL = encoderTicksL;
+    encoderTicksOldR = encoderTicksR;
     encoderTicksL = _encoderTicksL;
     encoderTicksR = _encoderTicksR;
 }
 
 void Navigation::updateGyro() {
     gyro.update();
+    noInterrupts();
+    float vectorchange = gyro.getZ() * ((encoderTicksR - encoderTicksOldR)*(encoderTicksL - encoderTicksOldL))/2;
+    xDir = xDir + cos(vectorchange);
+    yDir = yDir + sin(vectorchange);
+    interrupts();
 }

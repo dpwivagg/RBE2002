@@ -23,14 +23,19 @@ class Navigation {
 
     private:
         Gyro gyro;
-        int encoderTicksL;
-        int encoderTicksR;
+        int encoderTicksL = 0;
+        int encoderTicksR = 0;
+        int encoderTicksOldL = 0;
+        int encoderTicksOldR = 0;
         int encoderError;
         int gyroRead;
         double heading;
         double height;
         double c;
         bool sign;
+
+        double xDir = 0;
+        double yDir = 0;
 
         const unsigned short encTicksPerRev = 600; // change this if needed
         const float radius = 1.375;
