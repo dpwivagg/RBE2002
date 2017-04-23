@@ -29,6 +29,7 @@ class Chassis {
         void turn(signed char turn);
         void driveStraight(float setpoint, float currentpoint);
         void instantGo (int go);
+        
 
     private:
         void updateSinglePWM();

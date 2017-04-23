@@ -54,15 +54,15 @@ void Ultrasonic::update() {
     currFront = getSensorFront();
     if(abs(currRight - currBack) < 4) {
         state = drive;
-        Serial.println("All clear");
+        //Serial.println("All clear");
     }
     if(currRight > (2 * currBack)) {
         state = edge;
-        Serial.println("About to turn!");
+        //Serial.println("About to turn!");
     }
     if(currBack > (2 * currFront)) {
         state = halfDrive;
-        Serial.println("Almost around the corner");
+        // Serial.println("Almost around the corner");
     }
     if(currFront < ((calRight + calBack) / 2)) state = wall;
 }

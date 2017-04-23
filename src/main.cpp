@@ -1,7 +1,7 @@
 #include "RobotMap.h"
 #include <Arduino.h>
 #include <LiquidCrystal.h>
-
+#include <Encoder.h>
 #include "Chassis.h"
 #include "Arm.h"
 #include "Linesensor.h"
@@ -14,11 +14,10 @@ unsigned long timeForPush;
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
-LiquidCrystal lcd(40,41,42,43,44,45);
+Encoder encLeft(encLeft1, encLeft2);
+Encoder encRight(encRight1, encRight2);
 
-long newLeft, newRight, encError;
-long positionLeft  = -999;
-long positionRight = -999;
+LiquidCrystal lcd(40,41,42,43,44,45);
 
 // Arm arm;
 
@@ -31,15 +30,10 @@ void setup() {
 
   chassis.attach(mtrLF, mtrLR);
   ultrasonic.init();
-  gyro.init();
 
   lcd.begin(16,1);
 
   lcd.clear();
-
-  // lcd.print("GYRO INIT");
-
-  // delay(100);
 
   if (nav.init()) {
       lcd.print("GYRO SUCCESS");
@@ -51,37 +45,12 @@ void setup() {
 
 }
 
-long compError() {
-  encError = abs(positionLeft - positionRight);
-  return encError;
-}
-
-
 void auton () {
-/*
-    switch(ultrasonic.get()) {
-        case drive : lcd.clear();
-        lcd.print("drive     ");
-        chassis.drive(40);
-        break;
-        case edge : lcd.clear();
-        lcd.print("edge          ");
-        chassis.drive(25, 90);
-        break;
-        case halfDrive : lcd.clear();
-        lcd.print("halfDrive   ");
-        chassis.drive(25, 90);
-        break;
-        case wall : lcd.clear();
-        lcd.print("wall");
-        chassis.instantStop();
-        break;
-        default : lcd.clear();
-        lcd.print("no info    ");
-        chassis.instantStop();
-        break;
-    }
-*/
+    chassis.drive(110);
+    Serial.print(encLeft.read());
+    Serial.print("\t");
+    Serial.println(encRight.read());
+    delay(250);
 }
 
 void update () {
@@ -91,7 +60,8 @@ void update () {
     } else {
         chassis.update();
         ultrasonic.update();
-        gyro.update();
+        nav.updateGyro();
+        nav.updateEnc(encLeft.read(), encRight.read());
         // arm.update();
     }
 

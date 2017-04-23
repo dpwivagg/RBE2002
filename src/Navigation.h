@@ -19,12 +19,20 @@ class Navigation {
         void updateEnc(int encoderTicksL, int encoderTicksR);
         void updateGyro();
         bool init();
+        double getDir();
 
     private:
         Gyro gyro;
         int encoderTicksL;
         int encoderTicksR;
-
+        int encoderError;
+        int gyroRead;
+        double heading;
+        double height;
+        
+        const unsigned short encTicksPerRev = 600; // change this if needed
+        const float radius = 1.375;
+        const unsigned short wheelBase = 6;
 };
 
 #endif /* NAVIGATION_H_ */
