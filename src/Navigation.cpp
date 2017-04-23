@@ -10,10 +10,11 @@ bool Navigation::init() {
 
 double Navigation::getDir() {
     gyroRead = gyro.getZ();
-    encoderError = abs(encoderTicksL - encoderTicksR);
-    height = pow(((encoderError / encTicksPerRev) * 2 * M_PI * radius),2);
-    heading = acos((72 - height) / 72);
-    return round(heading);
+    encoderError = encoderTicksL - encoderTicksR;
+    height = pow((((double)encoderError / (double)encTicksPerRev) * 2 * M_PI * radius),2);
+    c = (72 - height) / 72;
+    heading = acos(c);
+    return (heading * (180.0 / M_PI));
 }
 
 void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {

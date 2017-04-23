@@ -46,8 +46,8 @@ void setup() {
 }
 
 void auton () {
-    chassis.drive(120);
     Serial.println(nav.getDir());
+    delay(500);
 }
 
 void update () {

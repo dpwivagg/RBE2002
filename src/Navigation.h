@@ -29,7 +29,8 @@ class Navigation {
         int gyroRead;
         double heading;
         double height;
-        
+        double c;
+
         const unsigned short encTicksPerRev = 600; // change this if needed
         const float radius = 1.375;
         const unsigned short wheelBase = 6;
