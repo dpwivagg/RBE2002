@@ -65,7 +65,6 @@ void updateSubsys () {
         nav.updateEnc(encLeft.read(), encRight.read());
         // arm.update();
     }
-
 }
 
 
