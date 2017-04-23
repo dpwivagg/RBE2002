@@ -48,9 +48,16 @@ void setup() {
 void auton () {
     // TODO : Use nav.getDir() to provide angle of turning to chassis.Drive()
     // TODO : Get the robot to drive in straight lines and execute 90 degree turns
+<<<<<<< HEAD
     // TODO :
     Serial.println(nav.getDir());
     delay(500);
+=======
+    // TODO : Implement autonomous field navigation using ultrasonic sensors
+    //Serial.println(nav.getDir());
+    //chassis.drive(40, 0);
+    chassis.drive(40, nav.getDir());
+>>>>>>> fda9501ec0aeb93167f78cfe2c9da85efd028891
 }
 
 void updateSubsys () {

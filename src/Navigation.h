@@ -30,6 +30,7 @@ class Navigation {
         double heading;
         double height;
         double c;
+        bool sign;
 
         const unsigned short encTicksPerRev = 600; // change this if needed
         const float radius = 1.375;
