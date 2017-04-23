@@ -11,8 +11,8 @@ bool Navigation::init() {
 double Navigation::getDir() {
     gyroRead = gyro.getZ();
     encoderError = abs(encoderTicksL - encoderTicksR);
-    height = ((encoderError / encTicksPerRev) * 2 * M_PI * radius);
-    heading = 90 - atan2(height, wheelBase);
+    height = pow(((encoderError / encTicksPerRev) * 2 * M_PI * radius),2);
+    heading = acos((72 - height) / 72);
     return heading;
 }
 
