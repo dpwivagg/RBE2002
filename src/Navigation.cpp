@@ -33,7 +33,7 @@ void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {
 void Navigation::updateGyro() {
     gyro.update();
     noInterrupts();
-    float vectorchange = gyro.getZ() * ((encoderTicksR - encoderTicksOldR)*(encoderTicksL - encoderTicksOldL))/2;
+    float vectorchange = getDir() * ((encoderTicksR - encoderTicksOldR)*(encoderTicksL - encoderTicksOldL))/2;
     xDir = xDir + cos(vectorchange);
     yDir = yDir + sin(vectorchange);
     interrupts();

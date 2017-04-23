@@ -21,10 +21,8 @@ class Gyro {
         Gyro();
         bool init();
         void update();
-
-
-        int getX();
-        int getY();
+        // int getX();
+        // int getY();
         int getZ();
 
     private:
