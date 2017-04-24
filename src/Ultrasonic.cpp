@@ -10,14 +10,6 @@ NewPing sonarBack(sonarBackOut, sonarBackIn, 375);
 Ultrasonic::Ultrasonic() {
 }
 
-void Ultrasonic::lock() {
-    writeableState = false;
-}
-
-void Ultrasonic::unlock() {
-    writeableState = true;
-}
-
 unsigned short Ultrasonic::get() {
     return state;
 }
@@ -57,23 +49,12 @@ unsigned int Ultrasonic::getSensorFront() {
 }
 
 void Ultrasonic::update() {
-    if(writeableState) {
-        currRight = getSensorRight();
-        currBack = getSensorBack();
-        currFront = getSensorFront();
-        if(abs(currRight - currBack) < 4) {
-            state = closeWall;
-            //Serial.println("All clear");
-        }
-        if(currRight > (2 * calRight)) {
-            state = edge;
-            //Serial.println("About to turn!");
-        }
-        if(currBack > (2 * calBack)) {
-            state = halfDrive;
-            // Serial.println("Almost around the corner");
-        }
-        if(currFront < ((calRight + calBack) / 2)) state = wall;
-        else state = drive;
-    }
+    currRight = getSensorRight();
+    currBack = getSensorBack();
+    currFront = getSensorFront();
+    if(currFront < ((calRight + calBack) / 2)) state = wall;
+    else if(currRight > (2 * calRight)) state = edge;
+    else if(currBack > (2 * calBack)) state = halfDrive;
+    else if(currRight < calRight) state = closeWall;
+    else state = drive;
 }

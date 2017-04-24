@@ -57,48 +57,37 @@ void auton () {
     // TODO : Create timer ISR for flame sensing routine--pause the robot and search
     curr = ultrasonic.get();
     switch(curr) {
-        case drive : lcd.clear();
+        case drive :
+            lcd.clear();
             lcd.print("drive     ");
             speedMode = 30;
-            // chassis.drive(30, (robotHeading + nav.getDir()));
         break;
-        case closeWall: lcd.clear();
+        case closeWall:
+            lcd.clear();
             lcd.print("close    ");
-            if(last != closeWall) robotHeading -= 10;
-            speedMode = 28;
-            break;
-        case wall : lcd.clear();
+            if(last!=closeWall) {
+                robotHeading += 3;
+                speedMode = 30;
+            }
+        break;
+        case wall :
+            lcd.clear();
             lcd.print("wall     ");
             if(last != wall) {
                 robotHeading -= 100;
             }
             speedMode = 0;
-            // if(nav.getDir() < robotHeading) {
-            //     ultrasonic.lock();
-            //     chassis.drive(0, -25);
-            // }
-            // else {
-            //     // chassis.stop();
-            //     ultrasonic.unlock();
-            // }
         break;
-        case edge : lcd.clear();
+        case edge :
+            lcd.clear();
             lcd.print("edge     ");
             if(last != edge) robotHeading += 100;
             speedMode = 0;
-            // if(nav.getDir() > robotHeading) {
-            //     ultrasonic.lock();
-            //     chassis.drive(0, 25);
-            // }
-            // else {
-            //     // chassis.stop();
-            //     ultrasonic.unlock();
-            // }
         break;
-        case halfDrive : lcd.clear();
+        case halfDrive :
+            lcd.clear();
             lcd.print("half     ");
             speedMode = 20;
-            // chassis.drive(20, 0);
         break;
         default : chassis.stop();
         break;
