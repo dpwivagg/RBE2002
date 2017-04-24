@@ -98,15 +98,10 @@ void auton () {
 }
 
 void updateSubsys () {
-    if (false) {
-        chassis.instantStop();
-        // arm.instantStop();
-    } else {
-        chassis.update();
-        ultrasonic.update();
-        nav.updateEnc(encLeft.read(), encRight.read());
-        // arm.update();
-    }
+    chassis.update();
+    ultrasonic.update();
+    nav.updateEnc(encLeft.read(), encRight.read());
+    // arm.update();
 }
 
 
