@@ -11,7 +11,9 @@
 unsigned long timeForPushSubsysFreq = 0;
 unsigned long timeForPushGyroFreq   = 0;
 
-// Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
+int robotHeading = 0;
+unsigned short last;
+
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
@@ -30,6 +32,8 @@ void setup() {
   timeForPushSubsysFreq = millis() + 100;
   chassis.attach(mtrLF, mtrLR);
   ultrasonic.init();
+
+  last = ultrasonic.get();
 
   lcd.begin(16,1);
 
@@ -50,6 +54,43 @@ void auton () {
     // TODO : Get the robot to drive in straight lines and execute 90 degree turns
     // TODO : Implement autonomous field navigation using ultrasonic sensors
 
+    switch(ultrasonic.get()) {
+        case drive : lcd.clear();
+            lcd.print("drive     ");
+            chassis.drive(32, (robotHeading + nav.getDir()));
+        break;
+        case wall : lcd.clear();
+            lcd.print("wall     ");
+            if(last != wall) robotHeading -= 90;
+            if(nav.getDir() < robotHeading) {
+                ultrasonic.lock();
+                chassis.drive(0, (robotHeading + nav.getDir()));
+            }
+            else {
+                chassis.stop();
+                ultrasonic.unlock();
+            }
+        break;
+        case edge : lcd.clear();
+            lcd.print("edge     ");
+            if(last != edge) robotHeading = nav.getDir() - 90;
+            if(nav.getDir() > robotHeading) {
+                ultrasonic.lock();
+                chassis.drive(0, 25);
+            }
+            else {
+                chassis.stop();
+                ultrasonic.unlock();
+            }
+        break;
+        case halfDrive : lcd.clear();
+            lcd.print("half     ");
+            chassis.drive(20, 0);
+        break;
+        default : chassis.stop();
+        break;
+    }
+    last = ultrasonic.get();
     //chassis.drive(40, nav.getDir());
     //Serial.println(nav.getDir());
     //chassis.drive(40, 0);

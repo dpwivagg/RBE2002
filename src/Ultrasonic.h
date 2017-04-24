@@ -32,6 +32,8 @@ class Ultrasonic {
         void update();
         void updateLineSensor();
         bool safeToDrive();
+        void lock();
+        void unlock();
         SonarStates state;
 
     private:
@@ -40,6 +42,7 @@ class Ultrasonic {
         unsigned int getSensorRight();
         unsigned int getSensorBack();
         unsigned int getSensorFront();
+        bool writeableState = true;
         //bool wallAhead();
 };
 
