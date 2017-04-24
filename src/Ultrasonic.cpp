@@ -65,11 +65,11 @@ void Ultrasonic::update() {
             state = drive;
             //Serial.println("All clear");
         }
-        if(currRight > (2 * currBack)) {
+        if(currRight > (2 * calRight)) {
             state = edge;
             //Serial.println("About to turn!");
         }
-        if(currBack > (2 * currFront)) {
+        if(currBack > (2 * calBack)) {
             state = halfDrive;
             // Serial.println("Almost around the corner");
         }

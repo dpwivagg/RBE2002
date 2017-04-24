@@ -12,6 +12,7 @@ unsigned long timeForPushSubsysFreq = 0;
 unsigned long timeForPushGyroFreq   = 0;
 
 int robotHeading = 0;
+unsigned short last;
 
 Chassis chassis;
 Ultrasonic ultrasonic;
@@ -31,6 +32,8 @@ void setup() {
   timeForPushSubsysFreq = millis() + 100;
   chassis.attach(mtrLF, mtrLR);
   ultrasonic.init();
+
+  last = ultrasonic.get();
 
   lcd.begin(16,1);
 
@@ -58,7 +61,7 @@ void auton () {
         break;
         case wall : lcd.clear();
             lcd.print("wall     ");
-            robotHeading += 90;
+            if(last != wall) robotHeading = nav.getDir() + 90;
             if(nav.getDir() < robotHeading) {
                 ultrasonic.lock();
                 chassis.drive(0, -35);
@@ -67,21 +70,21 @@ void auton () {
         break;
         case edge : lcd.clear();
             lcd.print("edge     ");
-            robotHeading -= 90;
+            if(last != edge) robotHeading = nav.getDir() - 90;
             if(nav.getDir() > robotHeading) {
                 ultrasonic.lock();
-                chassis.drive(0, 35);
+                chassis.drive(0, 45);
             }
             else ultrasonic.unlock();
         break;
         case halfDrive : lcd.clear();
             lcd.print("half     ");
-            robotHeading -= 90;
-        if(ultrasonic.get() != edge) chassis.drive(20, 0);
+            chassis.drive(20, 0);
         break;
         default : chassis.stop();
         break;
     }
+    last = ultrasonic.get();
     //chassis.drive(40, nav.getDir());
     //Serial.println(nav.getDir());
     //chassis.drive(40, 0);
