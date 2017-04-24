@@ -7,16 +7,20 @@
 #include "Linesensor.h"
 #include "Ultrasonic.h"
 #include "Navigation.h"
+#include "TimerOne.h"
+#include "FlameSense.h"
 
 unsigned long timeForPushSubsysFreq = 0;
 unsigned long timeForPushGyroFreq   = 0;
 double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
+bool closeFlame = false;
 
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
+FlameSense flame;
 Encoder encLeft(encLeft1, encLeft2);
 Encoder encRight(encRight1, encRight2);
 
@@ -36,6 +40,8 @@ void setup() {
   curr = ultrasonic.get();
   last = curr;
 
+  flame.init();
+
   lcd.begin(16,1);
 
   lcd.clear();
@@ -46,55 +52,59 @@ void setup() {
       lcd.print("GYRO FAILED");
   }
 
+  Timer1.initialize(1000000);
+  Timer1.attachInterrupt(sense);
+
   delay(1000);
 
 }
 
+void sense() {
+    flame.update();
+    flame.get(closeFlame);
+}
 void auton () {
-    // TODO : Use nav.getDir() to provide angle of turning to chassis.Drive()
-    // TODO : Get the robot to drive in straight lines and execute 90 degree turns
-    // TODO : Implement autonomous field navigation using ultrasonic sensors
-    // TODO : Create timer ISR for flame sensing routine--pause the robot and search
-    curr = ultrasonic.get();
-    switch(curr) {
-        case drive :
-            lcd.clear();
-            lcd.print("drive     ");
-            speedMode = 30;
-        break;
-        case closeWall:
-            lcd.clear();
-            lcd.print("close    ");
-            if(last!=closeWall) {
-                robotHeading += 3;
-                speedMode = 30;
-            }
-        break;
-        case wall :
-            lcd.clear();
-            lcd.print("wall     ");
-            if(last != wall) {
-                robotHeading -= 100;
-            }
-            speedMode = 0;
-        break;
-        case edge :
-            lcd.clear();
-            lcd.print("edge     ");
-            if(last != edge) robotHeading += 100;
-            speedMode = 0;
-        break;
-        case halfDrive :
-            lcd.clear();
-            lcd.print("half     ");
-            speedMode = 20;
-        break;
-        default : chassis.stop();
-        break;
-    }
-    last = curr;
-    chassis.drive(speedMode, (robotHeading + nav.getDir()));
-    //chassis.drive(40, nav.getDir());
+    // TODO : Fix timer ISR for flame sensing routine--pause the robot and search
+    // curr = ultrasonic.get();
+    // switch(curr) {
+    //     case drive :
+    //         lcd.clear();
+    //         lcd.print("drive     ");
+    //         speedMode = 30;
+    //     break;
+    //     case closeWall:
+    //         lcd.clear();
+    //         lcd.print("close    ");
+    //         if(last!=closeWall) {
+    //             robotHeading += 3;
+    //             speedMode = 30;
+    //         }
+    //     break;
+    //     case wall :
+    //         lcd.clear();
+    //         lcd.print("wall     ");
+    //         if(last != wall) {
+    //             robotHeading -= 100;
+    //         }
+    //         speedMode = 0;
+    //     break;
+    //     case edge :
+    //         lcd.clear();
+    //         lcd.print("edge     ");
+    //         if(last != edge) robotHeading += 100;
+    //         speedMode = 0;
+    //     break;
+    //     case halfDrive :
+    //         lcd.clear();
+    //         lcd.print("half     ");
+    //         speedMode = 20;
+    //     break;
+    //     default : chassis.stop();
+    //     break;
+    // }
+    // last = curr;
+    // chassis.drive(speedMode, (robotHeading + nav.getDir()));
+    // //chassis.drive(40, nav.getDir());
 }
 
 void updateSubsys () {

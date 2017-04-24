@@ -19,10 +19,10 @@ void FlameSense::init() {
     servoTilt.attach(servoTiltDigitalPin, 800, 2200);
 }
 
-void FlameSense::get(bool close) {
+double FlameSense::get(bool close) {
     if(close) radius = GuessRadClose(countLess100,countLess50,countLess20);
     else radius = GuessRadFar(countLess800,countLess500,countLess100);
-
+    return radius;
 }
 
 void FlameSense::update() {

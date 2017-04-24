@@ -9,7 +9,7 @@ class FlameSense {
     public:
         void init();
         void update();
-        void get(bool close);
+        double get(bool close);
 
     private:
         Servo servoTurn;
