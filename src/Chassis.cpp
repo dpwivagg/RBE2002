@@ -42,7 +42,7 @@ void Chassis::attach(unsigned char leftMotorFwd, unsigned char rightMotorFwd) {
 
 void Chassis::stop () { //stop
     speedState = 0;
-    turnState =  0;
+    turnState  = 0;
 }
 
 void Chassis::instantStop () { //bypasses update();
@@ -91,33 +91,33 @@ void Chassis::turn(signed char turn) { //keep going but turn
 }
 
 void Chassis::update() {
-    if (driveLR == '\0' || driveRR == '\0') {
+    // if (driveLR == '\0' || driveRR == '\0') {
       updateSinglePWM();
-    } else {
-      updateDualPWM();
-    }
+    // } else {
+    //   updateDualPWM();
+    // }
 
 }
 
 void Chassis::updateSinglePWM() {
-    volatile signed char currLeftSpeed = 0;
-    volatile signed char currRightSpeed = 0;
+    volatile signed int currLeftSpeed = 0;
+    volatile signed int currRightSpeed = 0;
 
-    if ((int)speedState + (int)turnState > 90) {
-        currLeftSpeed =  90;
-    } else if ((int)speedState + (int)turnState < -90) {
-        currLeftSpeed = -90;
-    } else {
+    // if ((int)speedState + (int)turnState > 90) {
+    //     currLeftSpeed =  90;
+    // } else if ((int)speedState + (int)turnState < -90) {
+    //     currLeftSpeed = -90;
+    // } else {
         currLeftSpeed = speedState + turnState;
-    }
+    // }
 
-    if ((int)speedState - (int)turnState > 90) {
-        currRightSpeed =  90;
-    } else if ((int)speedState - (int)turnState < -90) {
-        currRightSpeed = -90;
-    } else {
+    // if ((int)speedState - (int)turnState > 90) {
+    //     currRightSpeed =  90;
+    // } else if ((int)speedState - (int)turnState < -90) {
+    //     currRightSpeed = -90;
+    // } else {
         currRightSpeed = speedState - turnState;
-    }
+    // }
 
 
     leftMotor.write(90 + (currLeftSpeed));

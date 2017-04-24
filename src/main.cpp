@@ -94,7 +94,7 @@ void auton () {
     //chassis.drive(40, nav.getDir());
     //Serial.println(nav.getDir());
     //chassis.drive(40, 0);
-    chassis.drive(40, nav.getDir());
+    //chassis.drive(40, nav.getDir());
 }
 
 void updateSubsys () {
