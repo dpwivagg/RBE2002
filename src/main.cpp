@@ -10,7 +10,7 @@
 
 unsigned long timeForPushSubsysFreq = 0;
 unsigned long timeForPushGyroFreq   = 0;
-
+double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
 
