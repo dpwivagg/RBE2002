@@ -30,6 +30,7 @@ class Navigation {
         int encoderError;
         int gyroRead;
         double heading;
+        double aheading;
         double height;
         double c;
         bool sign;

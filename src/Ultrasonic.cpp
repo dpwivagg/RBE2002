@@ -62,7 +62,7 @@ void Ultrasonic::update() {
         currBack = getSensorBack();
         currFront = getSensorFront();
         if(abs(currRight - currBack) < 4) {
-            state = drive;
+            state = closeWall;
             //Serial.println("All clear");
         }
         if(currRight > (2 * calRight)) {
@@ -74,5 +74,6 @@ void Ultrasonic::update() {
             // Serial.println("Almost around the corner");
         }
         if(currFront < ((calRight + calBack) / 2)) state = wall;
+        else state = drive;
     }
 }
