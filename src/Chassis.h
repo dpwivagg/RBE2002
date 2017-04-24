@@ -26,7 +26,7 @@ class Chassis {
         void instantStop();
         void drive(signed char speed);
         void turn(signed char turn);
-        void driveStraight(float setpoint, float currentpoint);
+        float driveStraight(float setpoint, float currentpoint);
         void instantGo (int go);
 
 

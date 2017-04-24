@@ -81,8 +81,9 @@ void Chassis::drive(signed char speed) { //go
     speedState = speed;
 }
 
-void Chassis::driveStraight(float setpoint, float currentpoint) { //go
-
+float Chassis::driveStraight(float setpoint, float currentpoint) { //go
+    float kp = 0.1;
+    return kp * (setpoint - currentpoint);
 }
 
 void Chassis::turn(signed char turn) { //keep going but turn

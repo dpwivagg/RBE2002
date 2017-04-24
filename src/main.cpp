@@ -77,9 +77,12 @@ void updateSubsys () {
 
 void loop() {
   auton();  //calls the auton method
+  // if () {
+  //
+  // }
   if (millis() > timeForPushSubsysFreq) {
-    timeForPushSubsysFreq = millis() + 100;
-    updateSubsys();
+      timeForPushSubsysFreq = millis() + 100;
+      updateSubsys();
   }
   // if (millis() > timeForPushGyroFreq) {
   //   timeForPushGyroFreq = millis() + 20;
