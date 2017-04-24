@@ -57,14 +57,14 @@ void auton () {
     switch(ultrasonic.get()) {
         case drive : lcd.clear();
             lcd.print("drive     ");
-            chassis.drive(32, (robotHeading + nav.getDir()));
+            chassis.drive(30, (robotHeading + nav.getDir()));
         break;
         case wall : lcd.clear();
             lcd.print("wall     ");
-            if(last != wall) robotHeading -= 90;
+            if(last != wall) robotHeading += 90;
             if(nav.getDir() < robotHeading) {
                 ultrasonic.lock();
-                chassis.drive(0, (robotHeading + nav.getDir()));
+                chassis.drive(0, -25);
             }
             else {
                 chassis.stop();
