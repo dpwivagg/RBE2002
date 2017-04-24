@@ -20,45 +20,58 @@ void FlameSense::init() {
 }
 
 double FlameSense::get(bool close) {
-    if(close) radius = GuessRadClose(countLess100,countLess50,countLess20);
-    else radius = GuessRadFar(countLess800,countLess500,countLess100);
-    return radius;
+    return close?radiusClose:radiusFar;
 }
 
 void FlameSense::update() {
-    for(int tilt = 60; tilt<=110; tilt+=5){
-        for(int turn = 0; turn<100; turn+=1){
-          servoTurn.write(turn);
-          servoTilt.write(tilt);
-          delay(20);//lets servo settle before reading
-          count = 0;
-          if(turn%5==0){
-            for(int i = 0; i <= 10; i++){ // goes through so man times to take readings
-              count += analogRead(A0); // takes reading  A0 is the flame sensor pin
-              delay(20);//make this nonblocking
-            }//end for loop of count
-            count = count/10;
-            if (count<=lowest){//sets position and number of lowest read
-              lowest = count;
-              lowestTurn = turn - turnError;
-              lowestTilt = tilt - tiltError;
-            }//end if count<lowest
-            if(count<=800){
-              countLess800++;
-              if(count<=500){
-                countLess500++;
-                if(count<=100){
-                  countLess100++;
+
+    if(tilt<=110){
+        if(turn<100) {
+            servoTurn.write(turn);
+            servoTilt.write(tilt);
+            delay(20);//lets servo settle before reading
+            count = 0;
+            if(turn%5==0){
+                for(int i = 0; i <= 10; i++){ // goes through so man times to take readings
+                  count += analogRead(A0); // takes reading  A0 is the flame sensor pin
+                  delay(20);//make this nonblocking
+                }//end for loop of count
+                count = count/10;
+                if (count<=lowest){//sets position and number of lowest read
+                  lowest = count;
+                  lowestTurn = turn - turnError;
+                  lowestTilt = tilt - tiltError;
+                }//end if count<lowest
+                if(count<=800){
+                  countLess800++;
+                  if(count<=500){
+                    countLess500++;
+                    if(count<=100){
+                      countLess100++;
+                    }
+                  }
                 }
-              }
-            }
-          }//end of if turn % 5
+
+            }//end of if turn % 5
+            turn +=1;
+        } else {
+            turn = 0;
+        }
+
+        for(int turn = 100; turn>=0; turn-=1){//spins servo back slowly
+          delay(10);//allows it to turn smoothly
+          servoTurn.write(turn);
+        }
+
+        tilt+=5;
+
+    } else {
+        tilt = 60;
     }
-    for(int turn = 100; turn>=0; turn-=1){//spins servo back slowly
-      delay(10);//allows it to turn smoothly
-      servoTurn.write(turn);
-    }
-  }
+
+    radiusClose = GuessRadClose(countLess100,countLess50,countLess20);
+    radiusFar = GuessRadFar(countLess800,countLess500,countLess100);
+
 }
 
 double FlameSense::GuessRadFar(int less8,int less5, int less1){

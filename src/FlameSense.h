@@ -1,5 +1,5 @@
-#ifndef ROBOTMAP_H_
-#define ROBOTMAP_H_
+#ifndef FLAMESENSE_H_
+#define FLAMESENSE_H_
 
 #include <Arduino.h>
 #include <Servo.h>
@@ -12,6 +12,8 @@ class FlameSense {
         double get(bool close);
 
     private:
+        int tilt = 60;
+        int turn = 0;
         Servo servoTurn;
         Servo servoTilt;
 
@@ -24,7 +26,9 @@ class FlameSense {
         int lowestTurn;
         int lowestTilt;
         int radius;
-        static const unsigned int turnError=0;//this value is the difference between the servors write value and the value relative to the robot
+        int radiusClose = 0;
+        int radiusFar = 0;
+        static const unsigned int turnError = 0;//this value is the difference between the servors write value and the value relative to the robot
         static const unsigned int tiltError = 85;//same as
         static const unsigned char servoTurnDigitalPin = 9;
         static const unsigned char servoTiltDigitalPin = 8;

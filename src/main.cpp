@@ -26,6 +26,8 @@ Encoder encRight(encRight1, encRight2);
 
 LiquidCrystal lcd(40,41,42,43,44,45);
 
+void sense();
+
 // Arm arm;
 
 void setup() {
@@ -63,6 +65,7 @@ void sense() {
     flame.update();
     flame.get(closeFlame);
 }
+
 void auton () {
     // TODO : Fix timer ISR for flame sensing routine--pause the robot and search
     // curr = ultrasonic.get();
