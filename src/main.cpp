@@ -53,6 +53,8 @@ void setup() {
       lcd.print("GYRO FAILED");
   }
 
+  pinMode(fan, OUTPUT);
+
   delay(1000);
 
 }
@@ -102,6 +104,7 @@ void auton () {
         speedMode = 0;
         robotHeading += 10;
     }
+    // digitalWrite(fan, HIGH);
 
     // chassis.drive(speedMode, (robotHeading + nav.getDir()));
     chassis.drive(0,0);
