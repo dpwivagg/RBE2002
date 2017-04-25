@@ -8,7 +8,7 @@
 class FlameSense {
     public:
         void init();
-        void update();
+        bool update();
         double get(bool close);
 
     private:
@@ -16,6 +16,8 @@ class FlameSense {
         int turn = 0;
         Servo servoTurn;
         Servo servoTilt;
+
+        unsigned int sampleNumber;
 
         double GuessRadFar(int less8,int less5, int less1);
         double GuessRadClose(int less100,int less50, int less20);
