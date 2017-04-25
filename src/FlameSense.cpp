@@ -20,7 +20,13 @@ void FlameSense::init() {
 }
 
 double FlameSense::get(bool close) {
-    return close?radiusClose:radiusFar;
+    if(lowest < 800) return true;
+    return false;
+    // return close?radiusClose:radiusFar;
+}
+
+double FlameSense::getTurn() {
+    return lowestTurn - 90;
 }
 
 bool FlameSense::update() {

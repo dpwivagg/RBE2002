@@ -47,11 +47,11 @@ void setup() {
 
   lcd.clear();
 
-  if (nav.init()) {
-      lcd.print("GYRO SUCCESS");
-  } else {
-      lcd.print("GYRO FAILED");
-  }
+  // if (nav.init()) {
+  //     lcd.print("GYRO SUCCESS");
+  // } else {
+  //     lcd.print("GYRO FAILED");
+  // }
 
   pinMode(fan, OUTPUT);
 
@@ -60,61 +60,60 @@ void setup() {
 }
 
 void auton () {
-    // TODO : Fix timer ISR for flame sensing routine--pause the robot and search
-    curr = ultrasonic.get();
-    switch(curr) {
-        case drive :
-            lcd.clear();
-            lcd.print("drive     ");
-            speedMode = 30;
-        break;
-        case closeWall:
-            lcd.clear();
-            lcd.print("close    ");
-            if(last!=closeWall) {
-                robotHeading += 3;
-                speedMode = 30;
-            }
-        break;
-        case wall :
-            lcd.clear();
-            lcd.print("wall     ");
-            if(last != wall) {
-                robotHeading -= 100;
-            }
-            speedMode = 0;
-        break;
-        case edge :
-            lcd.clear();
-            lcd.print("edge     ");
-            if(last != edge) robotHeading += 100;
-            speedMode = 0;
-        break;
-        case halfDrive :
-            lcd.clear();
-            lcd.print("half     ");
-            speedMode = 20;
-        break;
-        default : chassis.stop();
-        break;
-    }
-    last = curr;
-    if(flameSensed) {
+    // curr = ultrasonic.get();
+    // switch(curr) {
+    //     case drive :
+    //         lcd.clear();
+    //         lcd.print("drive     ");
+    //         speedMode = 30;
+    //     break;
+    //     case closeWall:
+    //         lcd.clear();
+    //         lcd.print("close    ");
+    //         if(last!=closeWall) {
+    //             robotHeading += 3;
+    //             speedMode = 30;
+    //         }
+    //     break;
+    //     case wall :
+    //         lcd.clear();
+    //         lcd.print("wall     ");
+    //         if(last != wall) {
+    //             robotHeading -= 100;
+    //         }
+    //         speedMode = 0;
+    //     break;
+    //     case edge :
+    //         lcd.clear();
+    //         lcd.print("edge     ");
+    //         if(last != edge) robotHeading += 200;
+    //         speedMode = 20;
+    //     break;
+    //     case halfDrive :
+    //         lcd.clear();
+    //         lcd.print("half     ");
+    //         speedMode = 20;
+    //     break;
+    //     default : chassis.stop();
+    //     break;
+    // }
+    // last = curr;
+    if(flame.get(false)) {
         digitalWrite(fan, HIGH);
-        speedMode = 0;
-        robotHeading += 10;
+        speedMode = 10;
+        robotHeading = flame.getTurn();
     }
+
     // digitalWrite(fan, HIGH);
 
-    // chassis.drive(speedMode, (robotHeading + nav.getDir()));
-    chassis.drive(0,0);
+    chassis.drive(speedMode, (robotHeading + nav.getDir()));
+    // chassis.drive(0,0);
 }
 
 void updateSubsys () {
     chassis.update();
     ultrasonic.update();
     nav.updateEnc(encLeft.read(), encRight.read());
-
     // arm.update();
 }
 
@@ -139,5 +138,6 @@ void loop() {
             timeForPushGyroFreq = millis() + 5;
         }
     }
-    nav.updateGyro(); //nav.updateGyro()
+
+    // nav.updateGyro(); //nav.updateGyro()
 }

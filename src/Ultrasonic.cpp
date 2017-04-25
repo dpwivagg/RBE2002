@@ -50,11 +50,14 @@ unsigned int Ultrasonic::getSensorFront() {
 
 void Ultrasonic::update() {
     currRight = getSensorRight();
+    // Serial.println(currRight);
     currBack = getSensorBack();
+    // Serial.println(currBack);
     currFront = getSensorFront();
-    if(currFront < ((calRight + calBack) / 2)) state = wall;
-    else if(currRight > (2 * calRight)) state = edge;
-    else if(currBack > (2 * calBack)) state = halfDrive;
-    else if(currRight < calRight) state = closeWall;
+    // Serial.println(currFront);
+    if(currFront < 30 && currFront != 0) state = wall;
+    else if(currRight > (2 * calRight) && currRight != 0) state = edge;
+    // else if(currBack > (2 * calBack)) state = halfDrive;
+    // else if(currRight < calRight) state = closeWall;
     else state = drive;
 }
