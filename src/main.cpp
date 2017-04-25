@@ -3,11 +3,9 @@
 #include <LiquidCrystal.h>
 #include <Encoder.h>
 #include "Chassis.h"
-#include "Arm.h"
 #include "Linesensor.h"
 #include "Ultrasonic.h"
 #include "Navigation.h"
-#include "TimerOne.h"
 #include "FlameSense.h"
 
 unsigned long timeForPushSubsysFreq = 0;
@@ -15,8 +13,8 @@ unsigned long timeForPushGyroFreq   = 0;
 double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
-bool closeFlame = false;
-bool flameSensed = false;
+int pos = 0;
+bool found = false;
 
 Chassis chassis;
 Ultrasonic ultrasonic;
@@ -98,10 +96,14 @@ void auton () {
     //     break;
     // }
     // last = curr;
-    if(flame.get(false)) {
+    if(analogRead(A0) < 200) {
         digitalWrite(fan, HIGH);
         speedMode = 10;
         robotHeading = flame.getTurn();
+        // pos = robotHeading;
+        // found = true;
+        lcd.clear();
+        lcd.print("Found!");
     }
 
     // digitalWrite(fan, HIGH);
@@ -113,6 +115,7 @@ void auton () {
 void updateSubsys () {
     chassis.update();
     ultrasonic.update();
+    // flame.update(found, pos);
     nav.updateEnc(encLeft.read(), encRight.read());
     // arm.update();
 }
@@ -134,9 +137,9 @@ void loop() {
         updateSubsys();
     }
     if (millis() > timeForPushGyroFreq) {
-        if (!flame.update()) {
-            timeForPushGyroFreq = millis() + 5;
-        }
+        flame.servoSpin();
+        timeForPushGyroFreq = millis() + 5;
+
     }
 
     // nav.updateGyro(); //nav.updateGyro()
