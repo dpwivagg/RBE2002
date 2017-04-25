@@ -54,20 +54,19 @@ bool FlameSense::update() {
                     sampleNumber = 0;
                     count = 0;
                     turn++;
+                    // turn+=5;
 
                 }
 
 
             } else {//end of if turn % 5
-                turn +=1;
+                turn++;
+                // turn+=5;
             }
         } else {
-            turn = 0;
+            turn  = 0;
+            tilt += 5;
         }
-
-
-
-        tilt+=5;
 
     } else {
         tilt = 60;
