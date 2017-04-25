@@ -30,6 +30,8 @@ static const unsigned char encRight2 = 19;
 
 static const unsigned char lineSense = A1;
 
+static const unsigned char fan = 7;
+
 static const signed char mtrFwd = -50; // run motor full-speed 'forward'
 static const signed char mtrRwd = 50; // run motor full-speed 'reverse'
 static const signed char mtrStop = 0; // stop motor

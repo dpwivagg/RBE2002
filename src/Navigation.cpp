@@ -10,7 +10,7 @@ bool Navigation::init() {
 
 double Navigation::getDir() {
     // TODO : Implement sensor fusion with gyro and encoders (currently only encoders are used)
-    gyroRead = gyro.getZ();
+    // gyroRead = gyro.getZ();
     encoderError = encoderTicksL - encoderTicksR;
     if(encoderError < 0) sign = true;
     else sign = false;

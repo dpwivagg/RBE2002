@@ -16,6 +16,7 @@ double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
 bool closeFlame = false;
+bool flameSensed = false;
 
 Chassis chassis;
 Ultrasonic ultrasonic;
@@ -25,8 +26,6 @@ Encoder encLeft(encLeft1, encLeft2);
 Encoder encRight(encRight1, encRight2);
 
 LiquidCrystal lcd(40,41,42,43,44,45);
-
-void sense();
 
 // Arm arm;
 
@@ -54,16 +53,8 @@ void setup() {
       lcd.print("GYRO FAILED");
   }
 
-  Timer1.initialize(1000000);
-  Timer1.attachInterrupt(sense);
-
   delay(1000);
 
-}
-
-void sense() {
-    flame.update();
-    flame.get(closeFlame);
 }
 
 void auton () {
@@ -106,8 +97,13 @@ void auton () {
     //     break;
     // }
     // last = curr;
-    // chassis.drive(speedMode, (robotHeading + nav.getDir()));
-    // //chassis.drive(40, nav.getDir());
+    if(flameSensed) {
+        digitalWrite(fan, HIGH);
+        speedMode = 0;
+        robotHeading += 10;
+    }
+
+    chassis.drive(speedMode, (robotHeading + nav.getDir()));
 }
 
 void updateSubsys () {
