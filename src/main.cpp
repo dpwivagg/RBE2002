@@ -14,6 +14,7 @@ double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
 int pos = 0;
+int read;
 bool found = false;
 
 Chassis chassis;
@@ -96,12 +97,15 @@ void auton () {
     //     break;
     // }
     // last = curr;
-    if(analogRead(A0) < 200) {
+    //digitalWrite(fan, HIGH);
+    // add an average reading
+    read = analogRead(A0);
+    if(read < 200) {
         digitalWrite(fan, HIGH);
         speedMode = 10;
         robotHeading = flame.getTurn();
         // pos = robotHeading;
-        // found = true;
+        found = true;
         lcd.clear();
         lcd.print("Found!");
     }
@@ -137,9 +141,8 @@ void loop() {
         updateSubsys();
     }
     if (millis() > timeForPushGyroFreq) {
-        flame.servoSpin();
-        timeForPushGyroFreq = millis() + 5;
-
+        flame.servoSpin(found);
+        timeForPushGyroFreq = millis() + 25;
     }
 
     // nav.updateGyro(); //nav.updateGyro()

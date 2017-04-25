@@ -11,7 +11,7 @@ class FlameSense {
         void init();
         void update(bool found, int pos);
         int getTurn();
-        void servoSpin();
+        void servoSpin(bool found);
 
     private:
 
