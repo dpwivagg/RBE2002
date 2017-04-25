@@ -145,11 +145,11 @@ double FlameSense::getZ(int angle, int radius, int height){
 bool FlameSense::putOutFlame(){
   servoTurn.write(lowestTurn);
   servoTilt.write(lowestTilt);
-  fanState() = true
+  fanOn = true;
   if (read>850){
     return true;
   }
-  fanState() = false
+  fanOn = false;
   return false;
 }
 bool FlameSense::fanState(){

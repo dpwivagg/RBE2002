@@ -8,7 +8,10 @@
 class FlameSense {
     public:
         void init();
-        bool update();
+        bool updateClose();
+        bool updateFar();
+        bool putOutFlame();
+        bool fanState();
         double get(bool close);
         double getTurn();
 
@@ -26,6 +29,8 @@ class FlameSense {
         double getY(int angle, int radius);
         double getZ(int angle, int radius, int height);
 
+        bool fanOn;
+        
         int lowestTurn;
         int lowestTilt;
         int radius;
