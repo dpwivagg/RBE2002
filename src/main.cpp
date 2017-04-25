@@ -61,11 +61,11 @@ void auton () {
             lcd.print("drive     ");
             speedMode = 30;
         break;
-        case closeWall:
-            lcd.clear();
-            lcd.print("close    ");
-            speedMode = 22;
-        break;
+        // case closeWall:
+        //     lcd.clear();
+        //     lcd.print("close    ");
+        //     speedMode = 22;
+        // break;
         case wall :
             lcd.clear();
             lcd.print("wall     ");
@@ -78,15 +78,15 @@ void auton () {
             lcd.clear();
             lcd.print("edge     ");
             if(last != edge) {
-                robotHeading += 100;
+                robotHeading += 220;
             }
-            speedMode = 25;
+            speedMode = 30;
         break;
-        case halfDrive :
-            lcd.clear();
-            lcd.print("half     ");
-            speedMode = 20;
-        break;
+        // case halfDrive :
+        //     lcd.clear();
+        //     lcd.print("half     ");
+        //     speedMode = 20;
+        // break;
         default : chassis.stop();
         break;
     }
