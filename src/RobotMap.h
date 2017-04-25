@@ -19,9 +19,9 @@ static const unsigned char potArm = A1;
 static const unsigned char sonarFrontIn = A10;
 static const unsigned char sonarFrontOut = 24;
 static const unsigned char sonarRightIn = A9;
-static const unsigned char sonarRightOut = 23;
+static const unsigned char sonarRightOut = 22;
 static const unsigned char sonarBackIn = A8;
-static const unsigned char sonarBackOut = 22;
+static const unsigned char sonarBackOut = 23;
 
 static const unsigned char encLeft1 = 2;
 static const unsigned char encLeft2 = 3;
@@ -38,8 +38,6 @@ static const signed char mtrStop = 0; // stop motor
 static const unsigned char ledpindebug = 13;
 
 static const unsigned char linesensorArray [8] = {A0, A2, A3, A4, A5, A6, A7, A8};
-
-
 
 enum Bits {
   BIT0 = 0b00000001,

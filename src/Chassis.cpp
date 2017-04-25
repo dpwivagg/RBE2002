@@ -74,7 +74,7 @@ void Chassis::instantGo(int go) { //bypasses update();
 
 void Chassis::drive(signed char speed, signed char turn) { //go
     speedState = speed;
-    turnState = turn;
+    turnState = 0.3 * turn;
 }
 
 void Chassis::drive(signed char speed) { //go

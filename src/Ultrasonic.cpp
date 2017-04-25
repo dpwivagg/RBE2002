@@ -52,9 +52,9 @@ void Ultrasonic::update() {
     currRight = getSensorRight();
     currBack = getSensorBack();
     currFront = getSensorFront();
-    if(currFront < ((calRight + calBack) / 2)) state = wall;
-    else if(currRight > (2 * calRight)) state = edge;
-    else if(currBack > (2 * calBack)) state = halfDrive;
-    else if(currRight < calRight) state = closeWall;
+    if(currFront < 30 && currFront != 0) state = wall;
+    // else if(currRight > (2 * calRight) && currBack > (2 * calBack)) state = closeWall;
+    else if(currRight > (2 * calRight) && currRight != 0) state = edge;
+    // else if(currBack > (2 * calBack) && currBack != 0) state = halfDrive;
     else state = drive;
 }
