@@ -20,7 +20,13 @@ void FlameSense::init() {
 }
 
 double FlameSense::get(bool close) {
-    return close?radiusClose:radiusFar;
+    if(lowest < 800) return true;
+    return false;
+    // return close?radiusClose:radiusFar;
+}
+
+double FlameSense::getTurn() {
+    return lowestTurn - 90;
 }
 
 bool FlameSense::update() {
@@ -54,20 +60,19 @@ bool FlameSense::update() {
                     sampleNumber = 0;
                     count = 0;
                     turn++;
+                    // turn+=5;
 
                 }
 
 
             } else {//end of if turn % 5
-                turn +=1;
+                turn++;
+                // turn+=5;
             }
         } else {
-            turn = 0;
+            turn  = 0;
+            tilt += 5;
         }
-
-
-
-        tilt+=5;
 
     } else {
         tilt = 60;

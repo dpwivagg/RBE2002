@@ -10,6 +10,7 @@ class FlameSense {
         void init();
         bool update();
         double get(bool close);
+        double getTurn();
 
     private:
         int tilt = 60;

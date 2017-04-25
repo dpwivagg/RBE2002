@@ -16,6 +16,7 @@ double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
 bool closeFlame = false;
+bool flameSensed = false;
 
 Chassis chassis;
 Ultrasonic ultrasonic;
@@ -25,8 +26,6 @@ Encoder encLeft(encLeft1, encLeft2);
 Encoder encRight(encRight1, encRight2);
 
 LiquidCrystal lcd(40,41,42,43,44,45);
-
-void sense();
 
 // Arm arm;
 
@@ -48,26 +47,19 @@ void setup() {
 
   lcd.clear();
 
-  if (nav.init()) {
-      lcd.print("GYRO SUCCESS");
-  } else {
-      lcd.print("GYRO FAILED");
-  }
+  // if (nav.init()) {
+  //     lcd.print("GYRO SUCCESS");
+  // } else {
+  //     lcd.print("GYRO FAILED");
+  // }
 
-  Timer1.initialize(1000000);
-  Timer1.attachInterrupt(sense);
+  pinMode(fan, OUTPUT);
 
   delay(1000);
 
 }
 
-void sense() {
-    flame.update();
-    flame.get(closeFlame);
-}
-
 void auton () {
-    // TODO : Fix timer ISR for flame sensing routine--pause the robot and search
     // curr = ultrasonic.get();
     // switch(curr) {
     //     case drive :
@@ -94,8 +86,8 @@ void auton () {
     //     case edge :
     //         lcd.clear();
     //         lcd.print("edge     ");
-    //         if(last != edge) robotHeading += 100;
-    //         speedMode = 0;
+    //         if(last != edge) robotHeading += 200;
+    //         speedMode = 20;
     //     break;
     //     case halfDrive :
     //         lcd.clear();
@@ -106,8 +98,16 @@ void auton () {
     //     break;
     // }
     // last = curr;
-    // chassis.drive(speedMode, (robotHeading + nav.getDir()));
-    // //chassis.drive(40, nav.getDir());
+    if(flame.get(false)) {
+        digitalWrite(fan, HIGH);
+        speedMode = 10;
+        robotHeading = flame.getTurn();
+    }
+
+    // digitalWrite(fan, HIGH);
+
+    chassis.drive(speedMode, (robotHeading + nav.getDir()));
+    // chassis.drive(0,0);
 }
 
 void updateSubsys () {
@@ -125,17 +125,19 @@ void updateSubsys () {
 ///////////////////////////////////////////////
 
 void loop() {
-  auton();  //calls the auton method
-  // if () {
-  //
-  // }
-  if (millis() > timeForPushSubsysFreq) {
-      timeForPushSubsysFreq = millis() + 100;
-      updateSubsys();
-  }
-  // if (millis() > timeForPushGyroFreq) {
-  //   timeForPushGyroFreq = millis() + 20;
-  //   updateGyro();
-  // }
-  nav.updateGyro(); //nav.updateGyro()
+    auton();  //calls the auton method
+    // if () {
+    //
+    // }
+    if (millis() > timeForPushSubsysFreq) {
+        timeForPushSubsysFreq = millis() + 100;
+        updateSubsys();
+    }
+    if (millis() > timeForPushGyroFreq) {
+        if (!flame.update()) {
+            timeForPushGyroFreq = millis() + 5;
+        }
+    }
+
+    // nav.updateGyro(); //nav.updateGyro()
 }
