@@ -59,61 +59,63 @@ void setup() {
 }
 
 void auton () {
-    // curr = ultrasonic.get();
-    // switch(curr) {
-    //     case drive :
-    //         lcd.clear();
-    //         lcd.print("drive     ");
-    //         speedMode = 30;
-    //     break;
-    //     case closeWall:
-    //         lcd.clear();
-    //         lcd.print("close    ");
-    //         if(last!=closeWall) {
-    //             robotHeading += 3;
-    //             speedMode = 30;
-    //         }
-    //     break;
-    //     case wall :
-    //         lcd.clear();
-    //         lcd.print("wall     ");
-    //         if(last != wall) {
-    //             robotHeading -= 100;
-    //         }
-    //         speedMode = 0;
-    //     break;
-    //     case edge :
-    //         lcd.clear();
-    //         lcd.print("edge     ");
-    //         if(last != edge) robotHeading += 200;
-    //         speedMode = 20;
-    //     break;
-    //     case halfDrive :
-    //         lcd.clear();
-    //         lcd.print("half     ");
-    //         speedMode = 20;
-    //     break;
-    //     default : chassis.stop();
-    //     break;
-    // }
-    // last = curr;
-    //digitalWrite(fan, HIGH);
-    // add an average reading
-    read = analogRead(A0);
+    if(!found) {
+        curr = ultrasonic.get();
+        switch(curr) {
+            case drive :
+                lcd.clear();
+                lcd.print("drive     ");
+                speedMode = 30;
+            break;
+            case closeWall:
+                lcd.clear();
+                lcd.print("close    ");
+                if(last!=closeWall) {
+                    robotHeading += 3;
+                    speedMode = 30;
+                }
+            break;
+            case wall :
+                lcd.clear();
+                lcd.print("wall     ");
+                if(last != wall) {
+                    robotHeading -= 100;
+                }
+                speedMode = 0;
+            break;
+            case edge :
+                lcd.clear();
+                lcd.print("edge     ");
+                if(last != edge) robotHeading += 200;
+                speedMode = 20;
+            break;
+            case halfDrive :
+                lcd.clear();
+                lcd.print("half     ");
+                speedMode = 20;
+            break;
+            default : chassis.stop();
+            break;
+        }
+        last = curr;
+    }
+
+    for(int i = 0; i < 5; i++) {
+        read += analogRead(A0);
+    }
+
+    read = read / 5;
+
     if(read < 200) {
         digitalWrite(fan, HIGH);
-        speedMode = 10;
-        robotHeading = flame.getTurn();
-        // pos = robotHeading;
+        robotHeading += (flame.getTurn()-90);
+        speedMode = 0;
         found = true;
         lcd.clear();
         lcd.print("Found!");
     }
 
-    // digitalWrite(fan, HIGH);
-
     chassis.drive(speedMode, (robotHeading + nav.getDir()));
-    // chassis.drive(0,0);
 }
 
 void updateSubsys () {
