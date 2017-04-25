@@ -27,30 +27,50 @@ void Chassis::attach(unsigned char leftMotorFwd, unsigned char leftMotorRwd, uns
 
 }
 
-void Chassis::attach(unsigned char leftMotor, unsigned char rightMotor) {
-    driveLF =  leftMotor;
-    driveRF = rightMotor;
+void Chassis::attach(unsigned char leftMotorFwd, unsigned char rightMotorFwd) {
+    driveLF =  leftMotorFwd;
+    driveRF = rightMotorFwd;
     driveLR = '\0';
     driveRR = '\0';
 
     speedState = 0;
     turnState = 0;
 
-    pinMode(driveLF, OUTPUT);
-    pinMode(driveRF, OUTPUT);
+    leftMotor.attach(driveLF, 1000, 2000);
+    rightMotor.attach(driveRF, 1000, 2000);
 }
 
 void Chassis::stop () { //stop
     speedState = 0;
-    turnState = 0;
+    turnState =  0;
 }
 
 void Chassis::instantStop () { //bypasses update();
-    analogWrite(driveLF, 0);
-    analogWrite(driveRF, 0);
-    analogWrite(driveLR, 0);
-    analogWrite(driveRR, 0);
+    if (driveLR == '\0' || driveRR == '\0') {
+        leftMotor.write(90);
+
+        rightMotor.write(90);
+    } else {
+        analogWrite(driveLF, 0);
+        analogWrite(driveRF, 0);
+        analogWrite(driveLR, 0);
+        analogWrite(driveRR, 0);
+    }
 }
+
+void Chassis::instantGo(int go) { //bypasses update();
+    if (driveLR == '\0' || driveRR == '\0') {
+        leftMotor.write(90 + go);
+
+        rightMotor.write(90 - go);
+    } else {
+        analogWrite(driveLF, 0);
+        analogWrite(driveRF, 0);
+        analogWrite(driveLR, 0);
+        analogWrite(driveRR, 0);
+    }
+}
+
 
 void Chassis::drive(signed char speed, signed char turn) { //go
     speedState = speed;
@@ -61,12 +81,9 @@ void Chassis::drive(signed char speed) { //go
     speedState = speed;
 }
 
-void Chassis::driveStraight(float setpoint, float currentpoint) { //go
-    gyro.getX();
-}
-
-void Chassis::updateNav() {
-    gyro.update();
+float Chassis::driveStraight(float setpoint, float currentpoint) { //go
+    float kp = 0.1;
+    return kp * (setpoint - currentpoint);
 }
 
 void Chassis::turn(signed char turn) { //keep going but turn
@@ -83,8 +100,8 @@ void Chassis::update() {
 }
 
 void Chassis::updateSinglePWM() {
-    signed char currLeftSpeed;
-    signed char currRightSpeed;
+    volatile signed char currLeftSpeed = 0;
+    volatile signed char currRightSpeed = 0;
 
     if ((int)speedState + (int)turnState > 90) {
         currLeftSpeed =  90;
@@ -103,9 +120,9 @@ void Chassis::updateSinglePWM() {
     }
 
 
-    analogWrite(driveLF,  90 + currLeftSpeed);
+    leftMotor.write(90 + (currLeftSpeed));
 
-    analogWrite(driveRF,  90 + currRightSpeed);
+    rightMotor.write(90 - (currRightSpeed));
 
 }
 

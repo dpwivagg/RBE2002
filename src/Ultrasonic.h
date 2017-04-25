@@ -14,7 +14,7 @@
 enum SonarStates {
     drive, // both side sensors are reading similar values
     wall, // the front sensor has reached a wall
-
+    closeWall,
     edge, // the side front sensor has passed a corner but the
     // back is still reading the wall--time to turn
     halfDrive // the side front sensor is next to the wall but the
@@ -30,17 +30,20 @@ class Ultrasonic {
         unsigned short get();
         void init();
         void update();
+        void updateLineSensor();
         bool safeToDrive();
+        void lock();
+        void unlock();
         SonarStates state;
 
     private:
-        unsigned int calRight, calBack;
+        unsigned int calRight, calBack, currRight, currBack, currFront;
+        bool lineSensor;
         unsigned int getSensorRight();
         unsigned int getSensorBack();
-        unsigned int getSensorSide();
         unsigned int getSensorFront();
-        bool wallAhead();
-        bool pollLineSensor();
+        bool writeableState = true;
+        //bool wallAhead();
 };
 
 #endif /* Ultrasonic_H_ */

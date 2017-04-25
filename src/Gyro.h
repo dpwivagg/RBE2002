@@ -21,6 +21,11 @@ class Gyro {
         Gyro();
         bool init();
         void update();
+        // int getX();
+        // int getY();
+        int getZ();
+
+    private:
 
         void gyroZero();
         void updateGyro();
@@ -29,12 +34,8 @@ class Gyro {
         void accelZero();
         void updateAccel();
         void complimentaryFilter();
-        int getX();
-        int getY();
-        int getZ();
 
-    private:
-        float G_Dt=0.001;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
+        float G_Dt=0.02;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
 
         long timer=0;   //general purpose timer
         long timer1=0;
@@ -49,7 +50,7 @@ class Gyro {
         float gyro_zold; //gyro cummulative z value
         float gerrx; // Gyro x error
         float gerry; // Gyro y error
-        float gerrz; // Gyro 7 error
+        float gerrz; // Gyro z error
 
         float A_gain=.00875; // gyros gain factor for 250deg/sec
         float accel_x; //gyro x val

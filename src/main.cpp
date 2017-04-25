@@ -1,21 +1,26 @@
 #include "RobotMap.h"
 #include <Arduino.h>
 #include <LiquidCrystal.h>
-
+#include <Encoder.h>
 #include "Chassis.h"
 #include "Arm.h"
 #include "Linesensor.h"
+#include "Ultrasonic.h"
+#include "Navigation.h"
 
-unsigned long timeForPush;
+unsigned long timeForPushSubsysFreq = 0;
+unsigned long timeForPushGyroFreq   = 0;
 
-// Linesensor linesensor; TRIGGERS AT BLACK TAPE AT 335 ANALOG READ
+int robotHeading = 0;
+signed short last, curr, speedMode;
+
 Chassis chassis;
+Ultrasonic ultrasonic;
+Navigation nav;
 Encoder encLeft(encLeft1, encLeft2);
 Encoder encRight(encRight1, encRight2);
 
-long newLeft, newRight, encError;
-long positionLeft  = -999;
-long positionRight = -999;
+LiquidCrystal lcd(40,41,42,43,44,45);
 
 // Arm arm;
 
@@ -23,37 +28,80 @@ void setup() {
 
   Serial.begin(9600);
 
-
-
   Serial.println("Starting");
-  timeForPush = millis() + 100;
-
+  timeForPushSubsysFreq = millis() + 100;
   chassis.attach(mtrLF, mtrLR);
-  // arm.attach(mtrArm, potArm, srvClmp);
-  chassis.instantStop();
-  // linesensor.init();
+  ultrasonic.init();
+
+  curr = ultrasonic.get();
+  last = curr;
+
+  lcd.begin(16,1);
+
+  lcd.clear();
+
+  if (nav.init()) {
+      lcd.print("GYRO SUCCESS");
+  } else {
+      lcd.print("GYRO FAILED");
+  }
+
+  delay(1000);
 
 }
-
-long compError() {
-  encError = abs(positionLeft - positionRight);
-  return encError;
-}
-
 
 void auton () {
-    chassis.drive(90, 0);
+    // TODO : Use nav.getDir() to provide angle of turning to chassis.Drive()
+    // TODO : Get the robot to drive in straight lines and execute 90 degree turns
+    // TODO : Implement autonomous field navigation using ultrasonic sensors
+    // TODO : Create timer ISR for flame sensing routine--pause the robot and search
+    curr = ultrasonic.get();
+    switch(curr) {
+        case drive :
+            lcd.clear();
+            lcd.print("drive     ");
+            speedMode = 30;
+        break;
+        case closeWall:
+            lcd.clear();
+            lcd.print("close    ");
+            if(last!=closeWall) {
+                robotHeading += 3;
+                speedMode = 30;
+            }
+        break;
+        case wall :
+            lcd.clear();
+            lcd.print("wall     ");
+            if(last != wall) {
+                robotHeading -= 100;
+            }
+            speedMode = 0;
+        break;
+        case edge :
+            lcd.clear();
+            lcd.print("edge     ");
+            if(last != edge) robotHeading += 100;
+            speedMode = 0;
+        break;
+        case halfDrive :
+            lcd.clear();
+            lcd.print("half     ");
+            speedMode = 20;
+        break;
+        default : chassis.stop();
+        break;
+    }
+    last = curr;
+    chassis.drive(speedMode, (robotHeading + nav.getDir()));
+    //chassis.drive(40, nav.getDir());
 }
 
-void update () {
-    if (false) {
-        chassis.instantStop();
-        // arm.instantStop();
-    } else {
-        chassis.update();
-        // arm.update();
-    }
-
+void updateSubsys () {
+    chassis.update();
+    ultrasonic.update();
+    nav.updateEnc(encLeft.read(), encRight.read());
+    // arm.update();
 }
 
 
@@ -65,8 +113,16 @@ void update () {
 
 void loop() {
   auton();  //calls the auton method
-  if (millis() > timeForPush) {
-    timeForPush = millis() + 100;
-    update();
+  // if () {
+  //
+  // }
+  if (millis() > timeForPushSubsysFreq) {
+      timeForPushSubsysFreq = millis() + 100;
+      updateSubsys();
   }
+  // if (millis() > timeForPushGyroFreq) {
+  //   timeForPushGyroFreq = millis() + 20;
+  //   updateGyro();
+  // }
+  nav.updateGyro(); //nav.updateGyro()
 }

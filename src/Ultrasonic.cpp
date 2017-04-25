@@ -3,9 +3,9 @@
 #include "RobotMap.h"
 #include <NewPing.h>
 
-NewPing sonarFront(sonarFrontOut, sonarFrontIn, 300);
-NewPing sonarRight(sonarRightOut, sonarRightIn, 300);
-NewPing sonarBack(sonarBackOut, sonarBackIn, 300);
+NewPing sonarFront(sonarFrontOut, sonarFrontIn, 375);
+NewPing sonarRight(sonarRightOut, sonarRightIn, 375);
+NewPing sonarBack(sonarBackOut, sonarBackIn, 375);
 
 Ultrasonic::Ultrasonic() {
 }
@@ -14,23 +14,26 @@ unsigned short Ultrasonic::get() {
     return state;
 }
 
-bool Ultrasonic::pollLineSensor() {
+void Ultrasonic::updateLineSensor() {
     // over 335, a line is detected, return true and stop the robot
-    return (analogRead(lineSense) > 335);
+    if(analogRead(lineSense) > 335) lineSensor = true;
+    else lineSensor = false;
 }
 
-bool Ultrasonic::wallAhead() {
+/*void Ultrasonic::wallAhead() {
     return (sonarFront.ping_cm() < ((calRight + calBack) / 2));
-}
+}*/
 
 bool Ultrasonic::safeToDrive() {
-    return (pollLineSensor() || wallAhead());
+    if(state == wall || lineSensor) return false;
+    return true;
 }
 
 void Ultrasonic::init() {
     // calibrate the wall sensor starting values
     calRight = sonarRight.ping_cm();
     calBack = sonarBack.ping_cm();
+    //Serial.println((calRight + calBack)/2);
 }
 
 unsigned int Ultrasonic::getSensorRight() {
@@ -46,11 +49,12 @@ unsigned int Ultrasonic::getSensorFront() {
 }
 
 void Ultrasonic::update() {
-    unsigned int currRight = getSensorRight();
-    unsigned int currBack = getSensorBack();
-    unsigned int currFront = getSensorFront();
-    if(abs(currRight - currBack) < 4) state = drive;
-    if(currRight > (2 * currBack)) state = edge;
-    if(currBack > (2 * currFront)) state = halfDrive;
+    currRight = getSensorRight();
+    currBack = getSensorBack();
+    currFront = getSensorFront();
     if(currFront < ((calRight + calBack) / 2)) state = wall;
+    else if(currRight > (2 * calRight)) state = edge;
+    else if(currBack > (2 * calBack)) state = halfDrive;
+    else if(currRight < calRight) state = closeWall;
+    else state = drive;
 }
