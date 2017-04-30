@@ -11,33 +11,12 @@
 
 Chassis::Chassis(){}
 
-void Chassis::attach(unsigned char leftMotorFwd, unsigned char leftMotorRwd, unsigned char rightMotorFwd, unsigned char rightMotorRwd) {
-    driveLF =  leftMotorFwd;
-    driveRF = rightMotorFwd;
-    driveLR =  leftMotorRwd;
-    driveRR = rightMotorRwd;
-
-    speedState = 0;
-    turnState = 0;
-
-    pinMode(driveLF, OUTPUT);
-    pinMode(driveRF, OUTPUT);
-    pinMode(driveLR, OUTPUT);
-    pinMode(driveRR, OUTPUT);
-
-}
-
 void Chassis::attach(unsigned char leftMotorFwd, unsigned char rightMotorFwd) {
-    driveLF =  leftMotorFwd;
-    driveRF = rightMotorFwd;
-    driveLR = '\0';
-    driveRR = '\0';
-
     speedState = 0;
     turnState = 0;
 
-    leftMotor.attach(driveLF, 1000, 2000);
-    rightMotor.attach(driveRF, 1000, 2000);
+    leftMotor.attach(leftMotorFwd, 1000, 2000);
+    rightMotor.attach(rightMotorFwd, 1000, 2000);
 }
 
 void Chassis::stop () { //stop
@@ -45,30 +24,16 @@ void Chassis::stop () { //stop
     turnState =  0;
 }
 
-void Chassis::instantStop () { //bypasses update();
-    if (driveLR == '\0' || driveRR == '\0') {
+void Chassis::instantStop () {
         leftMotor.write(90);
 
         rightMotor.write(90);
-    } else {
-        analogWrite(driveLF, 0);
-        analogWrite(driveRF, 0);
-        analogWrite(driveLR, 0);
-        analogWrite(driveRR, 0);
-    }
 }
 
 void Chassis::instantGo(int go) { //bypasses update();
-    if (driveLR == '\0' || driveRR == '\0') {
         leftMotor.write(90 + go);
 
         rightMotor.write(90 - go);
-    } else {
-        analogWrite(driveLF, 0);
-        analogWrite(driveRF, 0);
-        analogWrite(driveLR, 0);
-        analogWrite(driveRR, 0);
-    }
 }
 
 
@@ -91,11 +56,7 @@ void Chassis::turn(signed char turn) { //keep going but turn
 }
 
 void Chassis::update() {
-    if (driveLR == '\0' || driveRR == '\0') {
       updateSinglePWM();
-    } else {
-      updateDualPWM();
-    }
 
 }
 
@@ -123,48 +84,5 @@ void Chassis::updateSinglePWM() {
     leftMotor.write(90 + (currLeftSpeed));
 
     rightMotor.write(90 - (currRightSpeed));
-
-}
-
-void Chassis::updateDualPWM() {
-
-    signed char currLeftSpeed;
-    signed char currRightSpeed;
-
-    if ((int)speedState + (int)turnState > 127) {
-        currLeftSpeed =  127;
-    } else if ((int)speedState + (int)turnState < -127) {
-        currLeftSpeed = -127;
-    } else {
-        currLeftSpeed = speedState + turnState;
-    }
-
-    if ((int)speedState - (int)turnState > 127) {
-        currRightSpeed =  127;
-    } else if ((int)speedState - (int)turnState < -127) {
-        currRightSpeed = -127;
-    } else {
-        currRightSpeed = speedState - turnState;
-    }
-
-    if (currLeftSpeed > 0) {
-        analogWrite(driveLF,  2 * currLeftSpeed);
-        analogWrite(driveLR, 0);
-    } else {
-        analogWrite(driveLF, 0);
-        analogWrite(driveLR, -2 * currLeftSpeed);
-
-    }
-
-    if (currRightSpeed > 0) {
-        analogWrite(driveRF,  2 * currRightSpeed);
-        analogWrite(driveRR, 0);
-
-    } else {
-        analogWrite(driveRF, 0);
-        analogWrite(driveRR, -2 * currRightSpeed);
-
-    }
-
 
 }
