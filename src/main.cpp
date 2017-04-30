@@ -7,7 +7,6 @@
 #include "Linesensor.h"
 #include "Ultrasonic.h"
 #include "Navigation.h"
-#include "TimerOne.h"
 #include "FlameSense.h"
 
 unsigned long timeForPushSubsysFreq = 0;
@@ -17,7 +16,6 @@ int robotHeading = 0;
 signed short last, curr, speedMode;
 bool closeFlame = false;
 bool flameSensed = false;
-
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
@@ -60,6 +58,7 @@ void setup() {
 }
 
 void auton () {
+
     // curr = ultrasonic.get();
     // switch(curr) {
     //     case drive :
@@ -102,11 +101,13 @@ void auton () {
         digitalWrite(fan, HIGH);
         speedMode = 10;
         robotHeading = flame.getTurn();
+
     }
 
     // digitalWrite(fan, HIGH);
 
     chassis.drive(speedMode, (robotHeading + nav.getDir()));
+
     // chassis.drive(0,0);
 }
 
