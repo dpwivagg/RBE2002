@@ -29,6 +29,9 @@ class Navigation {
         int encoderTicksOldR = 0;
         int encoderError;
         int gyroRead;
+
+        unsigned char sampleNumber = 0;
+
         double heading;
         double aheading;
         double height;
