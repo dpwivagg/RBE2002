@@ -16,7 +16,8 @@ signed short last, curr, speedMode;
 int pos = 0;
 int read;
 bool found = false;
-
+bool closeFlame = false;
+bool flameSensed = false;
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
@@ -102,6 +103,7 @@ void auton () {
 
     for(int i = 0; i < 5; i++) {
         read += analogRead(A0);
+
     }
 
     read = read / 5;
@@ -116,6 +118,8 @@ void auton () {
     }
 
     chassis.drive(speedMode, (robotHeading + nav.getDir()));
+
+    // chassis.drive(0,0);
 }
 
 void updateSubsys () {
