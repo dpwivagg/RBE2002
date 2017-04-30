@@ -3,7 +3,6 @@
 #include <LiquidCrystal.h>
 #include <Encoder.h>
 #include "Chassis.h"
-#include "Arm.h"
 #include "Linesensor.h"
 #include "Ultrasonic.h"
 #include "Navigation.h"
@@ -14,6 +13,9 @@ unsigned long timeForPushGyroFreq   = 0;
 double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
+int pos = 0;
+int read;
+bool found = false;
 bool closeFlame = false;
 bool flameSensed = false;
 Chassis chassis;
@@ -58,53 +60,62 @@ void setup() {
 }
 
 void auton () {
+    if(!found) {
+        curr = ultrasonic.get();
+        switch(curr) {
+            case drive :
+                lcd.clear();
+                lcd.print("drive     ");
+                speedMode = 30;
+            break;
+            case closeWall:
+                lcd.clear();
+                lcd.print("close    ");
+                if(last!=closeWall) {
+                    robotHeading += 3;
+                    speedMode = 30;
+                }
+            break;
+            case wall :
+                lcd.clear();
+                lcd.print("wall     ");
+                if(last != wall) {
+                    robotHeading -= 100;
+                }
+                speedMode = 0;
+            break;
+            case edge :
+                lcd.clear();
+                lcd.print("edge     ");
+                if(last != edge) robotHeading += 200;
+                speedMode = 20;
+            break;
+            case halfDrive :
+                lcd.clear();
+                lcd.print("half     ");
+                speedMode = 20;
+            break;
+            default : chassis.stop();
+            break;
+        }
+        last = curr;
+    }
 
-    // curr = ultrasonic.get();
-    // switch(curr) {
-    //     case drive :
-    //         lcd.clear();
-    //         lcd.print("drive     ");
-    //         speedMode = 30;
-    //     break;
-    //     case closeWall:
-    //         lcd.clear();
-    //         lcd.print("close    ");
-    //         if(last!=closeWall) {
-    //             robotHeading += 3;
-    //             speedMode = 30;
-    //         }
-    //     break;
-    //     case wall :
-    //         lcd.clear();
-    //         lcd.print("wall     ");
-    //         if(last != wall) {
-    //             robotHeading -= 100;
-    //         }
-    //         speedMode = 0;
-    //     break;
-    //     case edge :
-    //         lcd.clear();
-    //         lcd.print("edge     ");
-    //         if(last != edge) robotHeading += 200;
-    //         speedMode = 20;
-    //     break;
-    //     case halfDrive :
-    //         lcd.clear();
-    //         lcd.print("half     ");
-    //         speedMode = 20;
-    //     break;
-    //     default : chassis.stop();
-    //     break;
-    // }
-    // last = curr;
-    if(flame.get(false)) {
-        digitalWrite(fan, HIGH);
-        speedMode = 10;
-        robotHeading = flame.getTurn();
+    for(int i = 0; i < 5; i++) {
+        read += analogRead(A0);
 
     }
 
-    // digitalWrite(fan, HIGH);
+    read = read / 5;
+
+    if(read < 200) {
+        digitalWrite(fan, HIGH);
+        robotHeading += (flame.getTurn()-90);
+        speedMode = 0;
+        found = true;
+        lcd.clear();
+        lcd.print("Found!");
+    }
 
     chassis.drive(speedMode, (robotHeading + nav.getDir()));
 
@@ -114,6 +125,7 @@ void auton () {
 void updateSubsys () {
     chassis.update();
     ultrasonic.update();
+    // flame.update(found, pos);
     nav.updateEnc(encLeft.read(), encRight.read());
     // arm.update();
 }
@@ -135,9 +147,8 @@ void loop() {
         updateSubsys();
     }
     if (millis() > timeForPushGyroFreq) {
-        if (!flame.update()) {
-            timeForPushGyroFreq = millis() + 5;
-        }
+        flame.servoSpin(found);
+        timeForPushGyroFreq = millis() + 25;
     }
 
     // nav.updateGyro(); //nav.updateGyro()
