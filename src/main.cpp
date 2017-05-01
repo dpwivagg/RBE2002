@@ -14,11 +14,11 @@ double sensorHeight= 8.5;
 int robotHeading = 0;
 signed short last, curr, speedMode;
 int pos = 0;
-int read;
+int read, t;
 bool found = false;
 bool closeFlame = false;
 bool flameSensed = false;
-String buffer;
+char buffer[50];
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
@@ -105,7 +105,6 @@ void auton () {
 
     for(int i = 0; i < 5; i++) {
         read += analogRead(A0);
-
     }
 
     read = read / 5;
@@ -117,16 +116,17 @@ void auton () {
         found = true;
         lcd.clear();
         lcd.print("Found!");
+        t = millis();
     }
 
     chassis.drive(speedMode, (robotHeading + nav.getDir()));
 
-    if(found && read > 200) {
+    if(found && read > 300 && (t + millis()) > 5000) {
       digitalWrite(fan, LOW);
       lcd.clear();
       lcd.print("Extinguished");
       lcd.setCursor(2,0);
-      sprintf(buffer, "X: ", nav.getXpos(), "Y: ", nav.getYpos());
+      sprintf(buffer, "X: ", nav.getXpos(), " Y: ", nav.getYpos());
       lcd.print(buffer);
     }
 }

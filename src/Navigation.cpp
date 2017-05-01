@@ -32,11 +32,11 @@ void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {
 }
 
 int Navigation::getXpos() {
-
+    return 1;
 }
 
 int Navigation::getYpos() {
-  
+    return 1;
 }
 
 void Navigation::updateGyro() {
