@@ -31,12 +31,20 @@ void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {
     encoderTicksR = _encoderTicksR;
 }
 
+void Navigation::right() {
+    yDist += ((encoderTicksL + encoderTicksR) / 2) - xDist;
+}
+
+void Navigation::left() {
+    xDist += ((encoderTicksL + encoderTicksR) / 2) - yDist;
+}
+
 int Navigation::getXpos() {
-    return 1;
+    return xDist / encTicksPerRev * 2 * M_PI * radius;
 }
 
 int Navigation::getYpos() {
-    return 1;
+    return yDist / encTicksPerRev * 2 * M_PI * radius;
 }
 
 void Navigation::updateGyro() {

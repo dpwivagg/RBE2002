@@ -22,6 +22,8 @@ class Navigation {
         double getDir();
         int getXpos();
         int getYpos();
+        void right();
+        void left();
 
     private:
         Gyro gyro;
@@ -31,6 +33,8 @@ class Navigation {
         int encoderTicksOldR = 0;
         int encoderError;
         int gyroRead;
+        int yDist = 0;
+        int xDist = 0;
 
         unsigned char sampleNumber = 0;
 

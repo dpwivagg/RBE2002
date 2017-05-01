@@ -44,7 +44,7 @@ void setup() {
 
   flame.init();
 
-  lcd.begin(16,1);
+  lcd.begin(16,2);
 
   lcd.clear();
 
@@ -83,14 +83,18 @@ void auton () {
                 lcd.print("wall     ");
                 if(last != wall) {
                     robotHeading -= 100;
+                    nav.right();
                 }
                 speedMode = 0;
             break;
             case edge :
                 lcd.clear();
                 lcd.print("edge     ");
-                if(last != edge) robotHeading += 200;
-                speedMode = 20;
+                if(last != edge) {
+                    robotHeading += 100;
+                    nav.left();
+                }
+                speedMode = 0;
             break;
             case halfDrive :
                 lcd.clear();
@@ -109,7 +113,7 @@ void auton () {
 
     read = read / 5;
 
-    if(read < 200) {
+    if(read < 200 && !found) {
         digitalWrite(fan, HIGH);
         robotHeading += (flame.getTurn()-90);
         speedMode = 0;
@@ -121,12 +125,12 @@ void auton () {
 
     chassis.drive(speedMode, (robotHeading + nav.getDir()));
 
-    if(found && read > 300 && (t + millis()) > 5000) {
+    if(found && (t + millis()) > 6000) {
       digitalWrite(fan, LOW);
       lcd.clear();
       lcd.print("Extinguished");
-      lcd.setCursor(2,0);
-      sprintf(buffer, "X: ", nav.getXpos(), " Y: ", nav.getYpos());
+      lcd.setCursor(0,2);
+      sprintf(buffer, "X: %d Y: %d", nav.getXpos(), nav.getYpos());
       lcd.print(buffer);
     }
 }
