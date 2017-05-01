@@ -20,6 +20,8 @@ class Navigation {
         void updateGyro();
         bool init();
         double getDir();
+        int getXpos();
+        int getYpos();
 
     private:
         Gyro gyro;

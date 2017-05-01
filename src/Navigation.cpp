@@ -31,6 +31,14 @@ void Navigation::updateEnc(int _encoderTicksL, int _encoderTicksR) {
     encoderTicksR = _encoderTicksR;
 }
 
+int Navigation::getXpos() {
+
+}
+
+int Navigation::getYpos() {
+  
+}
+
 void Navigation::updateGyro() {
     gyro.update();
     // noInterrupts();

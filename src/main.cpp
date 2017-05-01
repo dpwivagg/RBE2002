@@ -18,6 +18,7 @@ int read;
 bool found = false;
 bool closeFlame = false;
 bool flameSensed = false;
+String buffer;
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
@@ -54,6 +55,7 @@ void setup() {
   // }
 
   pinMode(fan, OUTPUT);
+  digitalWrite(fan, LOW);
 
   delay(1000);
 
@@ -119,7 +121,14 @@ void auton () {
 
     chassis.drive(speedMode, (robotHeading + nav.getDir()));
 
-    // chassis.drive(0,0);
+    if(found && read > 200) {
+      digitalWrite(fan, LOW);
+      lcd.clear();
+      lcd.print("Extinguished");
+      lcd.setCursor(2,0);
+      sprintf(buffer, "X: ", nav.getXpos(), "Y: ", nav.getYpos());
+      lcd.print(buffer);
+    }
 }
 
 void updateSubsys () {
