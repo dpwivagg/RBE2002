@@ -19,6 +19,12 @@ void Chassis::attach(unsigned char leftMotorFwd, unsigned char rightMotorFwd) {
     rightMotor.attach(rightMotorFwd, 1000, 2000);
 }
 
+void Chassis::tank (signed short leftspd, signed short rightspd) {
+    leftMotor.write(90 - leftspd);
+
+    rightMotor.write(90 + rightspd);
+}
+
 void Chassis::stop () { //stop
     speedState = 0;
     turnState =  0;

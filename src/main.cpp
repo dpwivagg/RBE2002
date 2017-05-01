@@ -12,9 +12,9 @@ unsigned long timeForPushSubsysFreq = 0;
 unsigned long timeForPushGyroFreq   = 0;
 double sensorHeight= 8.5;
 int robotHeading = 0;
-signed short last, curr, speedMode;
+signed short last = 0, curr = 0, speedMode = 0;
 int pos = 0;
-int read;
+
 bool found = false;
 bool closeFlame = false;
 bool flameSensed = false;
@@ -57,69 +57,41 @@ void setup() {
 
   delay(1000);
 
+
+
 }
 
 void auton () {
-    if(!found) {
-        curr = ultrasonic.get();
-        switch(curr) {
-            case drive :
-                lcd.clear();
-                lcd.print("drive     ");
-                speedMode = 30;
-            break;
-            case closeWall:
-                lcd.clear();
-                lcd.print("close    ");
-                if(last!=closeWall) {
-                    robotHeading += 3;
-                    speedMode = 30;
-                }
-            break;
-            case wall :
-                lcd.clear();
-                lcd.print("wall     ");
-                if(last != wall) {
-                    robotHeading -= 100;
-                }
-                speedMode = 0;
-            break;
-            case edge :
-                lcd.clear();
-                lcd.print("edge     ");
-                if(last != edge) robotHeading += 200;
-                speedMode = 20;
-            break;
-            case halfDrive :
-                lcd.clear();
-                lcd.print("half     ");
-                speedMode = 20;
-            break;
-            default : chassis.stop();
-            break;
-        }
-        last = curr;
-    }
+   chassis.tank(45, 40);
 
-    for(int i = 0; i < 5; i++) {
-        read += analogRead(A0);
+   delay(4250);
 
-    }
+   chassis.tank(40, -37);
 
-    read = read / 5;
+   delay(1000);
 
-    if(read < 200) {
-        digitalWrite(fan, HIGH);
-        robotHeading += (flame.getTurn()-90);
-        speedMode = 0;
-        found = true;
-        lcd.clear();
-        lcd.print("Found!");
-    }
+   chassis.tank(45, 40);
 
-    chassis.drive(speedMode, (robotHeading + nav.getDir()));
+   delay(9000);
 
-    // chassis.drive(0,0);
+   chassis.tank(40, -40);
+
+   delay(1000);
+
+   chassis.tank(0, 0);
+
+   delay(1000);
+
+   chassis.tank(45, 40);
+
+   delay(2000);
+
+   chassis.tank(0, 0);
+
+   delay(1000);
+
+   digitalWrite(fan, HIGH);
+
 }
 
 void updateSubsys () {
@@ -139,17 +111,19 @@ void updateSubsys () {
 
 void loop() {
     auton();  //calls the auton method
-    // if () {
-    //
+    // // if () {
+    // //
+    // // }
+    // if (millis() > timeForPushSubsysFreq) {
+    //     timeForPushSubsysFreq = millis() + 100;
+    //     updateSubsys();
     // }
-    if (millis() > timeForPushSubsysFreq) {
-        timeForPushSubsysFreq = millis() + 100;
-        updateSubsys();
-    }
-    if (millis() > timeForPushGyroFreq) {
-        flame.servoSpin(found);
-        timeForPushGyroFreq = millis() + 25;
-    }
+    // if (millis() > timeForPushGyroFreq) {
+    //     flame.servoSpin(found);
+    //     timeForPushGyroFreq = millis() + 25;
+    // }
+    //
+    // // nav.updateGyro(); //nav.updateGyro()
 
-    // nav.updateGyro(); //nav.updateGyro()
+    while(1) ;
 }

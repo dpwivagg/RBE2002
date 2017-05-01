@@ -26,6 +26,7 @@ class Chassis {
         void turn(signed char turn);
         float driveStraight(float setpoint, float currentpoint);
         void instantGo (int go);
+        void tank (signed short leftspd, signed short rightspd);
 
 
     private:

@@ -9,8 +9,8 @@
  */
 
 
-static const unsigned char mtrLF =  10;
-static const unsigned char mtrLR =  11;
+static const unsigned char mtrLF =  11;
+static const unsigned char mtrLR =  10;
 
 static const unsigned char mtrArm = 5;
 static const unsigned char srvClmp = 3;
