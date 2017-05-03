@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "Gyro.h"
 //Originally written by Joe St. Germain 10/1/16
-//Adapted by James 4/19/17
+//Adapted by James and Dan 4/19/17
 
 #include <Wire.h>
 

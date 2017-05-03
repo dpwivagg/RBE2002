@@ -3,7 +3,7 @@
  * Gyro.h
  *
  *  Created on: 4/19/17
- *      Author: james, adapted from Joe St. Germain's code
+ *      Author: James, adapted from Joe St. Germain's code
  */
 
 #ifndef GYRO_H_

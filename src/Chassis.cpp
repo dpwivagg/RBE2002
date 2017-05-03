@@ -2,7 +2,7 @@
  *  Chassis.cpp
  *
  *  Created on: 2/26/17
- *      Author: james
+ *      Author: James and Dan
  */
 
 #include "Arduino.h"
@@ -42,11 +42,11 @@ void Chassis::drive(signed char speed, signed char turn) { //go
     turnState = 0.3 * turn;
 }
 
-void Chassis::drive(signed char speed) { //go
+void Chassis::drive(signed char speed) { //go no turn
     speedState = speed;
 }
 
-float Chassis::driveStraight(float setpoint, float currentpoint) { //go
+float Chassis::driveStraight(float setpoint, float currentpoint) { //go straight
     float kp = 0.1;
     return kp * (setpoint - currentpoint);
 }
@@ -60,7 +60,7 @@ void Chassis::update() {
 
 }
 
-void Chassis::updateSinglePWM() {
+void Chassis::updateSinglePWM() { //update
     volatile signed char currLeftSpeed = 0;
     volatile signed char currRightSpeed = 0;
 

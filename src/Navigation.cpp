@@ -1,3 +1,10 @@
+/*
+ *  Navigation.cpp
+ *
+ *  Created on: 4/19/17
+ *      Author: James and Dan
+ */
+
 #include "Navigation.h"
 #include "Chassis.h"
 #include <math.h>

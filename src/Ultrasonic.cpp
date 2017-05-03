@@ -32,15 +32,15 @@ void Ultrasonic::init() {
     //Serial.println((calRight + calBack)/2);
 }
 
-unsigned int Ultrasonic::getSensorRight() {
+unsigned int Ultrasonic::getSensorRight() { //get forward right US
     return sonarRight.ping_cm();
 }
 
-unsigned int Ultrasonic::getSensorBack() {
+unsigned int Ultrasonic::getSensorBack() {  //get backward right US
     return sonarBack.ping_cm();
 }
 
-unsigned int Ultrasonic::getSensorFront() {
+unsigned int Ultrasonic::getSensorFront() { //get front US
     return sonarFront.ping_cm();
 }
 
