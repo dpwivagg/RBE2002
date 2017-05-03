@@ -14,6 +14,7 @@ int tilt = 45;
 int servoTurnDigitalPin = 9;
 int servoTiltDigitalPin = 8;
 int count=0;
+int flameSenseCount = 0;
 int lowest = 5000;
 int lowestTurn;
 int lowestTilt;
@@ -21,12 +22,14 @@ int countLess20;
 int countLess50;
 int countLess100;
 int turnError=0;//this value is the difference between the servors write value and the value relative to the robot
-int tiltError = 85;//same as above
+int tiltError = 95;//same as above
 double sensorHeight= 8.5;//needs to be measured
 int radius;
+
 void setup() {
   servoTurn.attach(servoTurnDigitalPin,500,2500); 
   servoTilt.attach(servoTiltDigitalPin, 800, 2200);
+  pinMode(7, OUTPUT);
   Serial.begin(9600);
 }
   
@@ -72,6 +75,7 @@ void loop() {
       servoTurn.write(turn);
       }
   }
+
   radius = GuessRadius(countLess100,countLess50,countLess20);
   Serial.println();
   Serial.print("Lowest Value = ");
@@ -86,18 +90,25 @@ void loop() {
   Serial.println(getY(lowestTurn,radius));  
   Serial.print("Guess Z= ");
   Serial.println(getZ(lowestTilt,radius,sensorHeight));  
-    Serial.print("Guess radius= ");
+  Serial.print("Guess radius= ");
   Serial.println(radius);  
-  Serial.println();
-Serial.println("-------------------------------------------------------------------");
-for(int a=10; a>0;a--){
-  Serial.print(a);
-  Serial.print("\t");
+  servoTurn.write(lowestTurn+turnError);
+  servoTilt.write(lowestTilt+tiltError);
   delay(1000);
-}
-Serial.println();
-Serial.println("-------------------------------------------------------------------");
-Serial.println();
+  digitalWrite(7,HIGH);
+  while(flameSenseCount<25){
+    if(analogRead(A0)>1000){
+      delay(500);
+      flameSenseCount++;
+    }
+  }
+  digitalWrite(7,LOW);
+  Serial.println("FLAME OUT!!!!");
+  delay(500);
+  
+  while(1){
+  }
+  
 }
 
 double getX(int angle, int radius){
@@ -119,7 +130,7 @@ double getZ(int angle, int radius, int height){
    return(h);
 }
 
-double GuessRadius(int less100,int less50, int less20){
+int GuessRadius(int less100,int less50, int less20){
   if(less100>1){
     if(less100>10){
       if(less50>35){
