@@ -3,7 +3,6 @@
 #include <LiquidCrystal.h>
 #include <Encoder.h>
 #include "Chassis.h"
-#include "Linesensor.h"
 #include "Ultrasonic.h"
 #include "Navigation.h"
 #include "FlameSense.h"
