@@ -19,6 +19,7 @@ bool found = false;
 bool closeFlame = false;
 bool flameSensed = false;
 char buffer[50];
+
 Chassis chassis;
 Ultrasonic ultrasonic;
 Navigation nav;
@@ -27,8 +28,6 @@ Encoder encLeft(encLeft1, encLeft2);
 Encoder encRight(encRight1, encRight2);
 
 LiquidCrystal lcd(40,41,42,43,44,45);
-
-// Arm arm;
 
 void setup() {
 
@@ -48,11 +47,11 @@ void setup() {
 
   lcd.clear();
 
-  // if (nav.init()) {
-  //     lcd.print("GYRO SUCCESS");
-  // } else {
-  //     lcd.print("GYRO FAILED");
-  // }
+  if (nav.init()) {
+      lcd.print("GYRO SUCCESS");
+  } else {
+      lcd.print("GYRO FAILED");
+  }
 
   pinMode(fan, OUTPUT);
   digitalWrite(fan, LOW);
@@ -138,9 +137,8 @@ void auton () {
 void updateSubsys () {
     chassis.update();
     ultrasonic.update();
-    // flame.update(found, pos);
     nav.updateEnc(encLeft.read(), encRight.read());
-    // arm.update();
+    nav.updateGyro();
 }
 
 
@@ -151,10 +149,7 @@ void updateSubsys () {
 ///////////////////////////////////////////////
 
 void loop() {
-    auton();  //calls the auton method
-    // if () {
-    //
-    // }
+    auton();
     if (millis() > timeForPushSubsysFreq) {
         timeForPushSubsysFreq = millis() + 100;
         updateSubsys();
@@ -163,6 +158,4 @@ void loop() {
         flame.servoSpin(found);
         timeForPushGyroFreq = millis() + 25;
     }
-
-    // nav.updateGyro(); //nav.updateGyro()
 }

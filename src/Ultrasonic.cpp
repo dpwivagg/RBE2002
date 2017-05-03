@@ -14,18 +14,14 @@ unsigned short Ultrasonic::get() {
     return state;
 }
 
-void Ultrasonic::updateLineSensor() {
+bool Ultrasonic::updateLineSensor() {
     // over 335, a line is detected, return true and stop the robot
-    if(analogRead(lineSense) > 335) lineSensor = true;
-    else lineSensor = false;
+    if(analogRead(lineSense) > 335) return true;
+    else return false;
 }
 
-/*void Ultrasonic::wallAhead() {
-    return (sonarFront.ping_cm() < ((calRight + calBack) / 2));
-}*/
-
 bool Ultrasonic::safeToDrive() {
-    if(state == wall || lineSensor) return false;
+    if(state == wall || updateLineSensor()) return false;
     return true;
 }
 
@@ -57,9 +53,10 @@ void Ultrasonic::update() {
 
     // Serial.println(currFront);
     if(currFront < 30 && currFront != 0) state = wall;
+    else if(updateLineSensor()) state = wall;
     else if(currRight > (2 * calRight) && currRight != 0) state = edge;
-     else if(currBack > (2 * calBack)) state = halfDrive;
-    // else if(currRight < calRight) state = closeWall;
+    else if(currBack > (2 * calBack)) state = halfDrive;
+    else if(currRight < calRight) state = closeWall;
 
     else state = drive;
 }

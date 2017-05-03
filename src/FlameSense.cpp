@@ -9,11 +9,6 @@ void FlameSense::init() {
     servoTilt.attach(servoTiltDigitalPin, 800, 2200);
 }
 
-// void FlameSense::update(bool found, int pos) {
-//     if(!found) servoSpin(found);
-//     else setTurn(pos);
-// }
-
 int FlameSense::getTurn() {
     return turn;
 }

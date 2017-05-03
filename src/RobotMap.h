@@ -4,18 +4,8 @@
 #include <Arduino.h>
 
 
-/**
- * static const unsigned char chassis_/arm_
- */
-
-
 static const unsigned char mtrLF =  10;
 static const unsigned char mtrLR =  11;
-
-static const unsigned char mtrArm = 5;
-static const unsigned char srvClmp = 3;
-static const unsigned char potArm = A1;
-
 
 static const unsigned char sonarFrontIn = A10;
 static const unsigned char sonarFrontOut = 24;
@@ -38,9 +28,6 @@ static const signed char mtrRwd = 50; // run motor full-speed 'reverse'
 static const signed char mtrStop = 0; // stop motor
 #define MTRSTOP 90
 
-static const unsigned char ledpindebug = 13;
-
-static const unsigned char linesensorArray [8] = {A0, A2, A3, A4, A5, A6, A7, A8};
 
 enum Bits {
   BIT0 = 0b00000001,
